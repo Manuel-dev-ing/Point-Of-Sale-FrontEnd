@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+
+/* NAVBAR */
+.hover-panel:hover{
+    background-color: #cdd9e4;
+}
+
+
+/* TABLE ACTIONS */
+.btn-py-1{
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
+
+
+.btn-px-1{
+    padding-left: 9px;
+    padding-right: 9px;
+}
+
+/* hover button edit */
+.btn-edit-hover:hover{
+    background-color: #cdd9e4;
+}
+
+/* background btn delete */
+.bg-red{
+    background-color: #c44141;
+}
+.bg-red-hover:hover{
+    background-color: #bb4d4d;
+}
+
+.text-blue{
+    color:#4c78a5;
+}
+
+/* WIDTH */
+
+/* 1095px */
+.w-95{
+    width: 1095px;
+}
+
+
+/* BUTTONS */
+.btn-blue{
+    background-color: #4c78a5;
+}
+
+.btn-blue:hover{
+    background-color: #688cb1;
+}
+
+
