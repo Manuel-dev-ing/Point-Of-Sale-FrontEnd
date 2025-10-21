@@ -1,6 +1,11 @@
 import React, { useMemo, useState } from 'react'
 import { calcularResta } from '../../helpers'
 import type { SaleData } from '../../types'
+import { useMutation } from '@tanstack/react-query'
+import { create_venta } from '../../services/VentasAPI'
+import { toast } from 'react-toastify'
+import { TrendingUpDownIcon } from 'lucide-react'
+import { usePosNetStore } from '../../store'
 
 
 type ModalChangeProductProps = {
@@ -12,6 +17,23 @@ type ModalChangeProductProps = {
 
 export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : ModalChangeProductProps) {
   const [recibe, setRecibe] = useState<number>(0)
+  const clearDataVenta = usePosNetStore((state) => state.clearDataVenta)
+
+  const mutate = useMutation({
+    mutationFn: create_venta,
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: () => {
+      toast.success("Pago exitoso")
+      clearDataVenta()
+      setCobrar(false)
+      total = 0
+      setCobrar(false)
+      setRecibe(0)
+    }
+
+  })
 
   const handleClickCerrar = () => {
     setCobrar(false)
@@ -43,15 +65,14 @@ export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : Moda
 
     const venta = {
       idUsuario: 1,
-      idCliente: 8,
+      idCliente: 1,
       numeroVenta: 1,
       subTotal: total,
       total: total,
       detalleVenta: detalleVenta
     }
 
-    console.log(venta);
-
+    mutate.mutate(venta)
   }
 
   let resultado = useMemo(() => calcularResta(total, recibe), [total, recibe])
@@ -102,8 +123,9 @@ export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : Moda
               <div className="flex justify-start gap-2 mt-5">
                   <button
                       onClick={handleClickCobrar}
-                      type="submit"
-                      className="text-center text-white cursor-pointer btn-blue font-medium rounded text-sm px-5 py-2.5 transition w-xs">
+                      type="button"
+                      className="text-center text-white cursor-pointer btn-blue font-medium rounded text-sm px-5 py-2.5 transition w-xs disabled:bg-[#ff0000] disabled:cursor-not-allowed"
+                      disabled={resultado < 0}>
                       Cobrar
                   </button>
                   <button

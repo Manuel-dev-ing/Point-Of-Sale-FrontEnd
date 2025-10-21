@@ -17,6 +17,7 @@ type PosNetStore = {
     setIsOpen: (open : boolean) => void
     //ventas
     setDataVenta: (formData: SaleData) => Alerta
+    clearDataVenta: () => void
     actualizarCantidad: (Data: SaleData[]) => void
     eliminarProducto: (id : number) => Alerta
     elimanarProductos: (ids : number[]) => Alerta
@@ -104,6 +105,15 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
 
         }
 
+
+    },
+    clearDataVenta: () => {
+        
+        set(() => ({
+            dataVenta: []
+        }))
+
+        localStorage.removeItem('productos')
 
     },
     actualizarCantidad: (formData) => {

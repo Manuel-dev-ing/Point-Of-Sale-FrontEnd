@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { ArrowLeftRight, Barcode, Check, CircleDollarSign, CreditCard, PackageX, Receipt, RefreshCcw, Star, Trash2, User } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { ArrowLeftRight, CreditCard, PackageX, Star, Trash2, User } from 'lucide-react'
 import { getAllProducts } from '../services/ProductsAPI'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Product, SaleData, Venta } from '../types'
 import { toast } from 'react-toastify'
 import { getAllClients } from '../services/ClientsAPI'
@@ -163,13 +162,11 @@ export default function SalesPublic() {
         setIsOpen(true)
 
         setProductsSelected(productsSelected)
-    
     }
 
     const handleClickCobrar = () => {
 
         setCobrar(true)
-       
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
