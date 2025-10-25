@@ -1,5 +1,5 @@
 
-import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingCart, Users, Warehouse } from 'lucide-react'
+import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, Users, Warehouse } from 'lucide-react'
 import { ToastContainer } from 'react-toastify'
 
 import { Outlet } from 'react-router-dom'
@@ -37,6 +37,14 @@ export default function AdminLayout() {
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Ventas</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="/shopping" target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                            <ShoppingBag
+                                                size={15}
+                                            />
+                                            <span className="ms-3 text-sm font-normal">Compras</span>
                                         </a>
                                     </li>
                                     <li>

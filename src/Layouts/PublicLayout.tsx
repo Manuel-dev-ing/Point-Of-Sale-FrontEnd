@@ -29,7 +29,7 @@ export default function PublicLayout() {
           </div>
         </nav>
         <main className=''>
-          <div className='border-b-1 border-gray-200 p-3 flex justify-between bg-white'>
+          <div className='border-b-1 border-gray-200 p-2 flex justify-between bg-white'>
             <div className='flex space-x-2'>
               <Link to={'/products/add'} type="button" className="border bg-gray-100 border-gray-200 py-2 px-2.5 rounded hover:bg-gray-200 flex items-center gap-3 text-gray-700 font-medium text-sm cursor-pointer">
                   <Users size={17} />

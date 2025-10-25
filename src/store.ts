@@ -1,5 +1,5 @@
 import { json } from "zod"
-import type { Alerta, Categories, Category, Clients, Product, SaleData } from "./types"
+import type { Alerta, Categories, Category, Clients, ComprasData, Product, SaleData } from "./types"
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
 
@@ -10,6 +10,8 @@ type PosNetStore = {
     reset: () => void
     //ventas
     dataVenta: SaleData[] 
+    //Compras
+    dataCompras: ComprasData[]
     //ventas productos pendientes
     dataPendingProducts: SaleData[]
     //modal
@@ -17,21 +19,29 @@ type PosNetStore = {
     setIsOpen: (open : boolean) => void
     //ventas
     setDataVenta: (formData: SaleData) => Alerta
-    clearDataVenta: () => void
-    actualizarCantidad: (Data: SaleData[]) => void
-    eliminarProducto: (id : number) => Alerta
+    clearDataVenta: (name: string) => void
+    actualizarCantidad: (Data: SaleData[] | ComprasData[], name : string) => void
+    eliminarProducto: (id : number, name : string) => Alerta
     elimanarProductos: (ids : number[]) => Alerta
     setPendingProducts: (ids : number[]) => Alerta
     //state para guardar los elementos seleccionados
     dataProductsSelected: number[]
     setProductsSelected: (ids : number[]) => void
     changeProducts: (Data: SaleData[]) => void
+    //funciones compras
+    setDataCompra: (formData: ComprasData) => Alerta
 
 }
 
 const productsSale = () => {
     const productos = localStorage.getItem('productos')
     const arr_products : SaleData[] = productos ? JSON.parse(productos) : [] 
+    return arr_products
+}
+
+const productsCompras = () => {
+    const productos = localStorage.getItem('productosCompras')
+    const arr_products : ComprasData[] = productos ? JSON.parse(productos) : [] 
     return arr_products
 }
 
@@ -42,6 +52,7 @@ const pendingProducts = () => {
 }
 
 export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
+    dataCompras: productsCompras(),
     dataVenta: productsSale(),
     dataPendingProducts: pendingProducts(),
     data: {},
@@ -107,42 +118,99 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
 
 
     },
-    clearDataVenta: () => {
+    clearDataVenta: (name) => {
         
-        set(() => ({
-            dataVenta: []
-        }))
+        switch (name) {
+            case 'shooping':
+                set(() => ({
+                    dataCompras: []
+                }))
+        
+                localStorage.removeItem('productosCompras')    
 
-        localStorage.removeItem('productos')
+                break;
+            case 'sales':
+                set(() => ({
+                    dataVenta: []
+                }))
+        
+                localStorage.removeItem('productos')
+                
+                break;    
+        
+            default:
+                break;
+        }
+
 
     },
-    actualizarCantidad: (formData) => {
-        if (formData) {
+    actualizarCantidad: (formData, name) => {
+        if (formData && name) {
             
-            set(() => ({
-                dataVenta: formData
-            }))
+            switch (name) {
+                case 'shooping':
+                    console.log("actualizando cantidad en compras...");
+                    
+                    set(() => ({
+                        dataCompras: formData as ComprasData[]
+                    }))
 
-            const products = get().dataVenta
-            localStorage.setItem('productos', JSON.stringify(products))
+                    const productsCompra = get().dataCompras
+                    localStorage.setItem('productosCompras', JSON.stringify(productsCompra))    
+
+                    break;
+                case 'sales':
+                    console.log("actualizando cantidad en ventas...");
+
+                    set(() => ({
+                        dataVenta: formData as SaleData[]
+                    }))
+
+                    const productsVenta = get().dataVenta
+                    localStorage.setItem('productos', JSON.stringify(productsVenta))
+                    break;
+                default:
+                    break;
+            }
+
+            
         }
     },
-    eliminarProducto: (id) => {
-        const resultado = get().dataVenta.filter(x => x.idProducto != id);
-        if (resultado) {
-            console.log(resultado);
-            
-            set(() => ({
-                dataVenta: resultado
-            }))
+    eliminarProducto: (id, name) => {
+    
+        switch (name) {
 
-            const products = get().dataVenta
-            localStorage.setItem('productos', JSON.stringify(products))
-            return { isSuccess: true, mensaje: `producto eliminado` }
-        
-        }else{
-            return { isSuccess: true, mensaje: `error al elimanar el producto` }
+            case 'shooping':
+                const result = get().dataCompras.filter(x => x.idProducto != id);    
+                if (result) {
+                    set(() => ({
+                        dataCompras: result
+                    }))
+
+                    const products = get().dataCompras
+                    localStorage.setItem('productosCompras', JSON.stringify(products))
+                    return { isSuccess: true, mensaje: `producto eliminado` }
+                
+                }
+
+                break;
+            case 'sales':
+                 const resultado = get().dataVenta.filter(x => x.idProducto != id);    
+                if (resultado) {
+                    set(() => ({
+                        dataVenta: resultado
+                    }))
+
+                    const products = get().dataVenta
+                    localStorage.setItem('productos', JSON.stringify(products))
+                    return { isSuccess: true, mensaje: `producto eliminado` }
+                
+                }
+                break;
+            default:
+                return { isSuccess: true, mensaje: `error al elimanar el producto` }
         }
+       
     },
     elimanarProductos: (ids) => {
         const elementos_eliminar:SaleData[] = []
@@ -259,7 +327,47 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
         
 
     },
+    //Compras
+    setDataCompra: (formData) => {
+        
+        if (formData) {
+            const result = get().dataCompras.findIndex(item => item.idProducto === formData.idProducto)
+            if (result > 0) {
+                
+                console.log("El producto ya existe");
+                
+                const result = get().dataCompras.map(item => {
+                    console.log(item);
+                    if (item.idProducto === formData.idProducto) {
+                        item.cantidad += 1 
+                    }
+                    return item
+                });
+                
+                console.log(result);
+                set(() => ({
 
+                    dataCompras: result
+                }))
+
+                const products = get().dataCompras
+                localStorage.setItem('productosCompras', JSON.stringify(products))
+                return { isSuccess: true, mensaje: `se actualizo la cantidad` }
+
+            }else{
+                set(() => ({
+    
+                    dataCompras: [...get().dataCompras, formData]
+    
+                }))
+                const products = get().dataCompras
+                localStorage.setItem('productosCompras', JSON.stringify(products))
+       
+                return { isSuccess: true, mensaje: `${formData.producto} se añadio correctamente` }
+            }
+
+        }
+    },
 
 
 })))

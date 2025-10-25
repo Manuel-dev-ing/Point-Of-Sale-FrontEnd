@@ -17,6 +17,8 @@ type ModalChangeProductProps = {
 
 export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : ModalChangeProductProps) {
   const [recibe, setRecibe] = useState<number>(0)
+  const [nameSales, setNameSales] = useState<string>('sales')
+  
   const clearDataVenta = usePosNetStore((state) => state.clearDataVenta)
 
   const mutate = useMutation({
@@ -26,7 +28,7 @@ export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : Moda
     },
     onSuccess: () => {
       toast.success("Pago exitoso")
-      clearDataVenta()
+      clearDataVenta(nameSales)
       setCobrar(false)
       total = 0
       setCobrar(false)

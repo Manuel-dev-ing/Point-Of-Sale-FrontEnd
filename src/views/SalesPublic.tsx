@@ -34,6 +34,7 @@ export default function SalesPublic() {
     const [isChecked, setIsChecked] = useState<boolean>(true)
     const [productsSelected, setIsProductsSelected] = useState<number[]>([])
     const [venta, setVenta] = useState<Venta>(initialDataVenta)
+    const [nameSales, setNameSales] = useState<string>('sales')
     // const [productsSale, setProductsSale] = useState<SaleData[]>([])
 
     const dataVenta = usePosNetStore((state) => state.dataVenta as SaleData[])
@@ -69,7 +70,6 @@ export default function SalesPublic() {
 
     useEffect(() => {
         console.log("use effect 2");
-        
     
         if (cantidad! && idProducto!) {
             const resultado = dataVenta.map(item => {
@@ -80,7 +80,7 @@ export default function SalesPublic() {
             })
        
            
-            actualizarCantidad(resultado)
+            actualizarCantidad(resultado, nameSales)
             return
         }
             
@@ -114,7 +114,7 @@ export default function SalesPublic() {
 
     const handleClickEliminar = (id : number) => {
 
-        const resultado = eliminarProducto(id)    
+        const resultado = eliminarProducto(id, nameSales)    
         if (resultado.isSuccess) {
             toast.success(resultado.mensaje)
         }else{
@@ -344,8 +344,8 @@ export default function SalesPublic() {
                 </table>
             </div>
         </div>
-        <div className='flex gap-2 py-2 px-1 '>
-            <div className=' w-2xl bg-white rounded border-gray-200'>
+        <div className='flex gap-2 py-2 px-1'>
+            <div className='w-2xl bg-white rounded border-gray-200'>
                 <div className='flex justify-center items-center gap-2'>
                     <Button
                         text={'Cobrar'}

@@ -1,4 +1,4 @@
-import z from "zod"
+import z, { number, string } from "zod"
 
 //Categories
 const categories = z.object({
@@ -45,6 +45,19 @@ export const product = z.object({
     estado: z.boolean()
 })
 
+//proveedores
+const proveedor = z.object({
+    id: z.number(),
+    ciudad: z.string(),
+    nombre: z.string(),
+    primerApellido: z.string(),
+    segundoApellido: z.string(),
+    correo: z.string(),
+    telefono: z.string(),
+    colonia: z.string(),
+    codigoPostal: z.string(),
+    estado: z.boolean()
+})
 
 //datos venta
 const datosVenta = z.object({
@@ -55,6 +68,18 @@ const datosVenta = z.object({
     cantidad: z.number(),
     existencia: z.number()
 })
+
+//datos compras
+const datosCompras = z.object({
+    idProducto: z.number(),
+    categoria: z.string(),
+    producto: z.string(),
+    cantidad: z.number(),
+    costoUnitario: z.number(),
+    subTotal: z.number()
+})
+
+
 
 //schema ventas
 const detalleVenta = z.object({
@@ -72,6 +97,18 @@ export const venta = z.object({
     total: z.number(),
     detalleVenta: z.array(detalleVenta)
 })
+
+const compra = z.object({
+    idUsuario: z.number(),
+    idProveedor: z.number(),
+    numeroCompra: z.number(),
+    subTotal: z.number(),
+    total: z.number(),
+    DetalleCompra: z.array(detalleVenta)
+})
+
+
+
 
 //Categories
 export const categoriesShema = z.array(categories); 
@@ -96,6 +133,17 @@ export type Venta = z.infer<typeof venta>
 
 //Datos Venta
 export type SaleData = z.infer<typeof datosVenta>
+
+//Datos Compras
+export type ComprasData = z.infer<typeof datosCompras>
+
+//Proveedores
+export const proveedorSchema = z.array(proveedor)
+export type Proveedor = z.infer<typeof proveedor>
+
+//Compras
+export type Compra = z.infer<typeof compra>
+
 
 //Alerta
 export type Alerta = {

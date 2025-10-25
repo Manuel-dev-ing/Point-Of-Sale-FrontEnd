@@ -7,6 +7,7 @@ import ProductsView from "./views/ProductsView";
 import ProducrsCreateView from "./views/ProducrsCreateView";
 import SalesPublic from "./views/SalesPublic";
 import PublicLayout from "./Layouts/PublicLayout";
+import Shopping from "./views/Shopping";
 
 
 export default function Router(){
@@ -23,6 +24,7 @@ export default function Router(){
                 </Route>
                 <Route element={<PublicLayout />}>
                     <Route path="/sales" element={<SalesPublic />} />
+                    <Route path="/shopping" element={<Shopping />} />
                 </Route>
                 
 
