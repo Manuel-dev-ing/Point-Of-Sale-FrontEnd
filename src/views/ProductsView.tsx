@@ -133,10 +133,10 @@ export default function ProductsView() {
              text-gray-700 text-sm rounded focus:ring-blue-500 focus:border-blue-500 p-2.5 w-52" 
              onChange={handleChangeSelect} value={select}>
                 <option value={0}>Todas las categorias</option>
-                {dataCategory?.map((category) => (
-                    <>
-                        <option key={category.id} value={category.id}>{category.nombre}</option>
-                    </>
+                {dataCategory?.map((category, index) => (
+                    
+                    <option key={index} value={category.id}>{category.nombre}</option>
+                    
                 ))}
             </select>
 
@@ -216,7 +216,9 @@ export default function ProductsView() {
                                     {product.codigoBarras}
                                 </td>
                                 <td className="px-6 py-4">
-                                    <span className={`${product.stockInicial >= product.stockMinimo ? '   bg-blue-900' : 'bg-red-900'}  text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg`}>{product.stockInicial >= product.stockMinimo ? 'Disponible' : 'Stock Bajo'}</span>
+                                    <span className={`${product.stockInicial >= product.stockMinimo ? '   bg-blue-900' : 'bg-red-900'} text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded-lg`}>
+                                        {product.stockInicial >= product.stockMinimo ? 'Disponible' : 'Stock Bajo'}
+                                    </span>
                                 </td>
                                 <td className="px-6 py-3">
                                     <div className='flex gap-4'>
@@ -243,8 +245,6 @@ export default function ProductsView() {
                     </tbody>
                 </table>
             </div>
-
-
         </div>
 
     

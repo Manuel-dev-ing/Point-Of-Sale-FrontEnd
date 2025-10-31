@@ -107,7 +107,16 @@ const compra = z.object({
     DetalleCompra: z.array(detalleVenta)
 })
 
-
+// movimientos schema
+export const movimiento = z.object({
+    id: z.number(),
+    idUsuario: z.number(),
+    idProducto: z.number(),
+    tipo: z.string(),
+    cantidad: z.number(),
+    motivo: z.string(),
+    fecha: z.string(),
+})
 
 
 //Categories
@@ -144,6 +153,18 @@ export type Proveedor = z.infer<typeof proveedor>
 //Compras
 export type Compra = z.infer<typeof compra>
 
+
+//Movimientos
+export const movimientosShema = z.array(movimiento)
+
+
+
+export type MovimientoFormData = {
+    idProducto: number,
+    movimiento: string,
+    cantidad: number,
+    motivo: string
+}
 
 //Alerta
 export type Alerta = {

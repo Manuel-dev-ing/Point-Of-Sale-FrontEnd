@@ -72,7 +72,7 @@ export default function AdminLayout() {
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <a href="/inventory" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <Warehouse
                                                 size={15}
                                             />
