@@ -118,6 +118,48 @@ export const movimiento = z.object({
     fecha: z.string(),
 })
 
+export const resumenVenta = z.object({
+    ingresos: z.number(),
+    ventas: z.number(),
+    fecha: z.string()
+})
+
+export const topProducts = z.object({
+  
+    idProducto: z.number(),
+    nombre: z.string(),
+    cantidad: z.number(),
+    ingresos: z.number()
+
+})
+
+export const topUsuarios = z.object({
+  
+    nombre: z.string(),
+    primerApellido: z.string(),
+    ventas: z.number(),
+    total: z.number()
+
+})
+
+export const ventasCategorias = z.object({
+    value: z.number(),
+    categoria: z.string()
+})
+
+//Ventas Categorias
+export const ventasCategoriasShema = z.array(ventasCategorias)
+export type VentaCategoria = z.infer<typeof ventasCategorias>
+
+//Top Usuarios
+export const topUsuariosShema = z.array(topUsuarios)
+
+//Top Products
+export const topProductsSchema = z.array(topProducts);
+
+//Resumen Ventas
+export const resumenVentasSchema = z.array(resumenVenta)
+export type ResumenVenta = z.infer<typeof resumenVenta>
 
 //Categories
 export const categoriesShema = z.array(categories); 

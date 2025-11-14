@@ -80,7 +80,7 @@ export default function AdminLayout() {
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <a href="/reports" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <ChartColumn
                                                 size={15}
                                             />
