@@ -2,7 +2,7 @@
 import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, Users, Warehouse } from 'lucide-react'
 import { ToastContainer } from 'react-toastify'
 
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 
 export default function AdminLayout() {
   return (
@@ -98,12 +98,12 @@ export default function AdminLayout() {
                                 <ul className="space-y-1 font-medium">
                                
                                     <li>
-                                        <a href="#" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <Link to={'/users'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <Settings
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Usuarios</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                 
                                 </ul>

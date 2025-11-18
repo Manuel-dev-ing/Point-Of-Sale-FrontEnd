@@ -1,11 +1,11 @@
 import { json } from "zod"
-import type { Alerta, Categories, Category, Clients, ComprasData, Product, SaleData } from "./types"
+import type { Alerta, Categories, Category, Clients, ComprasData, Product, SaleData, User } from "./types"
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
 
 type PosNetStore = {
-    data: Category | Clients | Product | {}
-    set: (formData: Category | Clients | Product) => void
+    data: Category | Clients | Product | {} | User
+    set: (formData: Category | Clients | Product | User) => void
     activeId: number
     reset: () => void
     //ventas

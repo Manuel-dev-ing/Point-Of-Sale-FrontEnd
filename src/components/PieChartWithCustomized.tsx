@@ -17,7 +17,7 @@ export default function PieChartWithCustomized({ isAnimationActive = true, data 
   
   return (
     <>
-      {data!.length ? (
+      {data?.length ? (
         <PieChart width={700} height={250}>
           <Pie
             data={data}

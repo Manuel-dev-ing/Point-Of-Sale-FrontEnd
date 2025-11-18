@@ -10,8 +10,8 @@ import { calcularIVA } from "../helpers";
 import { map } from "zod";
 import type { ResumenVenta } from "../types";
 
-const reportes = ['ventas', 'productos', 'cajeros', 'inventario']
-const periodos = ['semana', 'mes', 'trimestre', 'anio', 'personalizado']
+const reportes = ['ventas']
+const periodos = ['semana', 'mes', 'trimestre', 'anio']
 
 export default function ReportsView() {
   const [tipoReporte, setTipoReporte] = useState<string>('ventas')

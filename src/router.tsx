@@ -10,6 +10,7 @@ import PublicLayout from "./Layouts/PublicLayout";
 import Shopping from "./views/Shopping";
 import InventoryView from "./views/InventoryView";
 import ReportsView from "./views/ReportsView";
+import UsersView from "./views/UsersView";
 
 
 export default function Router(){
@@ -25,6 +26,7 @@ export default function Router(){
                     <Route path="/products/add" element={<ProducrsCreateView />} />
                     <Route path="/inventory" element={<InventoryView />} />
                     <Route path="/reports" element={<ReportsView />} />
+                    <Route path="/users" element={<UsersView />} />
 
                 </Route>
                 <Route element={<PublicLayout />}>

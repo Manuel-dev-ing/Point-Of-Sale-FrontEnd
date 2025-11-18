@@ -147,6 +147,32 @@ export const ventasCategorias = z.object({
     categoria: z.string()
 })
 
+//rols
+export const rol = z.object({
+    id: number(),
+    nombre: string()
+})
+
+//users
+export const users = z.object({
+
+    id: number(),
+    idRol: number(),
+    nombre: string(),
+    primerApellido: string(),
+    segundoApellido: string().nullable(),
+    correo: string(),
+    estado: z.boolean()
+
+})
+
+export const rolsSchema = z.array(rol)
+export type Rol = z.infer<typeof rol>
+
+export const usersSchema = z.array(users)
+export type User = z.infer<typeof users>
+export type UserFormData = Pick<User, 'correo' | 'idRol' | 'nombre' | 'primerApellido' | 'segundoApellido' >
+
 //Ventas Categorias
 export const ventasCategoriasShema = z.array(ventasCategorias)
 export type VentaCategoria = z.infer<typeof ventasCategorias>
