@@ -16,7 +16,6 @@ export default function AdminLayout() {
                             </div>
 
                             <div className='px-3 py-4 '>
-
                                 <div>
                                     <p className='capitalize text-gray-500 text-xs font-medium'>Modulos Principales</p>
                                 </div>
@@ -24,68 +23,68 @@ export default function AdminLayout() {
                                 <ul className="space-y-1 font-medium">
                                     <li>
                                     
-                                        <a href="/" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <Link to={'/'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <LayoutDashboard
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Dashboard</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a href="/sales" target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <ShoppingCart
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Ventas</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a href="/shopping" target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <Link to={'/shopping'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <ShoppingBag
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Compras</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a href="/products" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <Link to={'/products'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <Package
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Productos</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a href="/categories" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <Link to={'/categories'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <FolderOpen
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Categorias</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a href="/clients" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <Link to={'/clients'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <Users
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Clientes</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a href="/inventory" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <Link to={'/inventory'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <Warehouse
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Inventario</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a href="/reports" className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <Link to={'/reports'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <ChartColumn
                                                 size={15}
                                             />
                                             <span className="ms-3 text-sm font-normal">Reportes</span>
-                                        </a>
+                                        </Link>
                                     </li>
                                     
                                 
