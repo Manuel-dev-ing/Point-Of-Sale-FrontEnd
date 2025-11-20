@@ -12,10 +12,11 @@ const salesByMonth = [
 ];
 
 type SimpleBarChartProps = {
-  data : ResumenVenta[]
+  data?: ResumenVenta[]
+  isVissible: boolean
 }
 
-export default function SimpleBarChart({data } : SimpleBarChartProps) {
+export default function SimpleBarChart({data, isVissible } : SimpleBarChartProps) {
   return (
     <BarChart
       height={400}
@@ -35,7 +36,11 @@ export default function SimpleBarChart({data } : SimpleBarChartProps) {
       <YAxis yAxisId="left" />
       <YAxis yAxisId="right" orientation="right" />
       <Tooltip />
-      <Bar yAxisId="left" dataKey="ventas" fill="#4573a1" name="Ventas" />
+      {isVissible ? (
+        <Bar yAxisId="left" dataKey="ventas" fill="#4573a1" name="Ventas" />
+      ) : (
+        <></>
+      )}
       <Bar yAxisId="right" dataKey="ingresos" fill="#45A167" name="Ingresos ($)" />
     </BarChart>
   )

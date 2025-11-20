@@ -62,7 +62,9 @@ export async function getTopProducts() {
 export async function getResumenVentas({ queryKey }) {
 
     try {
+        
         const [_key, { fechaInicio, fechaFin }] = queryKey;
+   
         const response = await api('/reports/resumen', {
             params: {fechaInicio, fechaFin}
         })

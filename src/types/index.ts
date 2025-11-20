@@ -166,9 +166,22 @@ export const users = z.object({
 
 })
 
+// resume dashboard
+export const resumeDashboard = z.object({
+    ventas: z.number(),
+    ingresos: z.number(),
+    productos: z.number(),
+    clientes: z.number()
+}) 
+
+//dashboard
+export const resumeDashboardShema = resumeDashboard;
+
+//rols
 export const rolsSchema = z.array(rol)
 export type Rol = z.infer<typeof rol>
 
+//users
 export const usersSchema = z.array(users)
 export type User = z.infer<typeof users>
 export type UserFormData = Pick<User, 'correo' | 'idRol' | 'nombre' | 'primerApellido' | 'segundoApellido' >
@@ -200,6 +213,7 @@ export type ClientFormData = Pick<Clients, 'nombre' | 'primerApellido' | 'segund
 
 //Products
 export const productsShema = z.array(products)
+export const productShema = z.array(product)
 export type Product = z.infer<typeof products>
 export type ProductData = z.infer<typeof product>
 

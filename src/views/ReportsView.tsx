@@ -55,9 +55,14 @@ export default function ReportsView() {
       
         let week_start = format(weekStart(new Date()), "YYYY-MM-DD", "en")
         let week_end = format(weekEnd(new Date()), "YYYY-MM-DD", "en") 
-        setPeriodo('semana')
-        setFechaInicio(week_start)
-        setFechaFin(week_end)
+        console.log("week_start: ");
+        console.log(week_start);
+        console.log("week_end: ");
+        console.log(week_end);
+
+        // setPeriodo('semana')
+        // setFechaInicio(week_start)
+        // setFechaFin(week_end)
 
         break;
 
@@ -414,7 +419,7 @@ export default function ReportsView() {
           </h3>
 
           <div className="mt-5">
-            <SimpleBarChart data={dataChart} />
+            <SimpleBarChart data={dataChart} isVissible={true} />
           </div>    
             
 
