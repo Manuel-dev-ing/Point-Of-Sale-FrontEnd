@@ -2,14 +2,36 @@
 import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, Users, Warehouse } from 'lucide-react'
 import { ToastContainer } from 'react-toastify'
 
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Navigate, Outlet } from 'react-router-dom'
+import { usePosNetStore } from '../store'
+import { useEffect } from 'react'
+import { da } from 'zod/v4/locales'
+import type { AuthUser } from '../types'
 
-export default function AdminLayout() {
-  return (
-    <>
-        <div className='bg-gray-50 w-full h-screen'>
-            <div className='relative bg-gray-50'>
-                <aside id="default-sidebar" className="flex flex-col fixed top-0 left-0 z-40 w-64 transition-transform -translate-x-full sm:translate-x-0 border h-screen bg-gray-50 border-gray-300" aria-label="Sidebar">
+type AdminLayoutProps = {
+    user: AuthUser | {}
+}
+
+export default function AdminLayout({user} : AdminLayoutProps) {
+    
+    // const dataAuth = usePosNetStore((state) => state.dataAuthProfileUser)
+    console.log(user);
+    
+
+    if (Object.keys(user).length === 0) {
+        console.log("Redireccionando a la vista Login");
+        
+        return <Navigate to={"/login"} replace />
+    }
+    console.log("Autenticado...");
+    
+    
+
+    return (
+        <>
+            <div className='bg-gray-50 w-full h-screen'>
+                <div className='relative bg-gray-50'>
+                    <aside id="default-sidebar" className="flex flex-col fixed top-0 left-0 z-40 w-64 transition-transform -translate-x-full sm:translate-x-0 border h-screen bg-gray-50 border-gray-300" aria-label="Sidebar">
                         <div>
                             <div className='border-gray-300 border-b-1 py-3 px-3'>
                                 <a href='/' className='font-medium text-gray-800 text-xl'>TiendaPOS</a>
@@ -95,7 +117,7 @@ export default function AdminLayout() {
                                 </div>
 
                                 <ul className="space-y-1 font-medium">
-                               
+                                
                                     <li>
                                         <Link to={'/users'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                             <Settings
@@ -120,45 +142,46 @@ export default function AdminLayout() {
 
                             <p className='font-medium text-gray-700 text-sm'>Cerrar Sesion</p>
                         </div>
-                </aside>
+                    </aside>
 
-                <nav className="bg-white shadow-md fixed top-0 right-0 w-95 z-50">
-                    <div className="flex items-center justify-between p-4">
-                        <div  className="flex items-center space-x-3 rtl:space-x-reverse">
-                            <div className='p-1 rounded cursor-pointer hover-panel'>
-                                <PanelLeft 
-                                    size={18}
-                                />
+                    <nav className="bg-white shadow-md fixed top-0 right-0 w-95 z-50">
+                        <div className="flex items-center justify-between p-4">
+                            <div  className="flex items-center space-x-3 rtl:space-x-reverse">
+                                <div className='p-1 rounded cursor-pointer hover-panel'>
+                                    <PanelLeft 
+                                        size={18}
+                                    />
+                                </div>
+
+                                <a href='/' className="self-center font-semibold whitespace-nowrap text-lg text-gray-700">Sistema de Punto de Venta</a>
                             </div>
-
-                            <a href='/' className="self-center font-semibold whitespace-nowrap text-lg text-gray-700">Sistema de Punto de Venta</a>
+                        
+                            <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+                                
+                            </div>
                         </div>
-                      
-                        <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-                            
-                        </div>
-                    </div>
-                </nav>
+                    </nav>
 
-            </div>
-
-
-            <div className="p-4 h-screen sm:ml-72 bg-gray-50">
-
-                <div className='mt-16'>
-                  
-                    <Outlet />
                 </div>
+
+
+                <div className="p-4 h-screen sm:ml-72 bg-gray-50">
+
+                    <div className='mt-16'>
+                        
+                        <Outlet />
+                        
+                    </div>
+
+                </div>
+
             </div>
-        </div>
-      
-        <ToastContainer 
-            pauseOnHover={false}
-            pauseOnFocusLoss={false}
-        />
-    
-    
-    
-    </>
-  )
+        
+            <ToastContainer 
+                pauseOnHover={false}
+                pauseOnFocusLoss={false}
+            />
+        
+        </>
+    )
 }

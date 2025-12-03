@@ -11,14 +11,20 @@ import Shopping from "./views/Shopping";
 import InventoryView from "./views/InventoryView";
 import ReportsView from "./views/ReportsView";
 import UsersView from "./views/UsersView";
+import Login from "./views/Login";
+import { usePosNetStore } from "./store";
+import type { AuthUser } from "./types";
 
 
 export default function Router(){
 
+    const dataAuth = usePosNetStore((state) => state.dataAuthProfileUser as AuthUser)
+    console.log(dataAuth);
+
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<AdminLayout />}>
+                <Route element={<AdminLayout user={dataAuth} />}>
                     <Route path="/" element={<AdminIndexView />} index />
                     <Route path="/categories" element={<CategoriesView />} />
                     <Route path="/clients" element={<ClientsView />} />
@@ -33,7 +39,7 @@ export default function Router(){
                     <Route path="/sales" element={<SalesPublic />} />
                     <Route path="/shopping" element={<Shopping />} />
                 </Route>
-                
+                <Route path="/login" element={<Login />} />
 
             </Routes>
         </BrowserRouter>

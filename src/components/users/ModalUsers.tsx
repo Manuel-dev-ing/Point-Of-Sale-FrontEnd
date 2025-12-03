@@ -1,17 +1,19 @@
 import { useForm } from "react-hook-form";
-import type { Rol, User, UserFormData } from "../../types";
+import type { Rol, User, UserFormData, UserUpdateFormData } from "../../types";
 import ErrorMessage from "../ErrorMessage";
 import { useMutation } from "@tanstack/react-query";
 import { createUser, updateUser } from "../../services/UsersAPI";
 import { toast } from "react-toastify";
 import { usePosNetStore } from "../../store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 const initialValues : UserFormData = {
     correo: '',
     idRol: 0,
     nombre: '',
     primerApellido: '',
     segundoApellido: '',
+    password: ''
 }
 
 type ModalUsersProps = {
@@ -21,6 +23,8 @@ type ModalUsersProps = {
 }
 
 export default function ModalUsers({rols, isOpen, setIsOpen} : ModalUsersProps) {
+    const [showPassword, setShowPassword] = useState<boolean>(false) 
+    const [password, setPassword] = useState<string | null>('')
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({defaultValues: initialValues})
 
@@ -62,8 +66,11 @@ export default function ModalUsers({rols, isOpen, setIsOpen} : ModalUsersProps) 
                 correo: user_data.correo,
                 idRol: user_data.idRol,
                 primerApellido: user_data.primerApellido,
-                segundoApellido: user_data.segundoApellido
+                segundoApellido: user_data.segundoApellido,
+                // password: user_data.password
             })
+
+            setPassword(user_data.password)
         }
 
 
@@ -86,13 +93,18 @@ export default function ModalUsers({rols, isOpen, setIsOpen} : ModalUsersProps) 
 
     const handleFormSubmit = (data: UserFormData) => {
         if (activeId) {
-            const payload : User = {...data, id: activeId, idRol: Number(data.idRol), estado: user_data.estado}
+            const updatePassword = data.password ? data.password : password
+
+            const payload : UserUpdateFormData = {...data, id: activeId, idRol: Number(data.idRol), password: updatePassword, estado: user_data.estado}
             console.log("editando...");
-         
+            console.log(payload);
+            
             mutationEdit.mutate(payload)
             
         }else{
             console.log("guardando...");
+            console.log(data);
+            
             // mutation.mutate(data)
             
         }
@@ -126,7 +138,8 @@ export default function ModalUsers({rols, isOpen, setIsOpen} : ModalUsersProps) 
                         <form className="p-2 mb-2" onSubmit={handleSubmit(handleFormSubmit)}>
                             <div className="mb-4 flex flex-col">
                                 <label htmlFor="nombre" className="text-gray-700 font-medium text-sm capitalize">Nombre *</label>
-                                <input type="text" className="block w-full p-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-blue-500" id="nombre" placeholder="Ej. Pedro"
+                                <input type="text" 
+                                className="text-sm border w-full border-gray-300 rounded-md py-2.5 pl-3 focus:border-[#4573a1] focus:border-2 outline-none" id="nombre" placeholder="Ej. Pedro"
                                     {...register('nombre', {
                                         required: "El Nombre del cliente es requerido"
                                     })}
@@ -139,7 +152,8 @@ export default function ModalUsers({rols, isOpen, setIsOpen} : ModalUsersProps) 
 
                             <div className="mb-4 flex flex-col">
                                 <label htmlFor="nombre" className="text-gray-700 font-medium text-sm capitalize">Primer apellido *</label>
-                                <input type="text" className="block w-full p-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-blue-500" id="nombre" placeholder="Ej. Garcia" 
+                                <input type="text" 
+                                className="text-sm border w-full border-gray-300 rounded-md py-2.5 pl-3 focus:border-[#4573a1] focus:border-2 outline-none" id="nombre" placeholder="Ej. Garcia" 
                                     {...register("primerApellido", {
                                         required: "El Primer Apellido es requerido"
                                     })}    
@@ -153,16 +167,19 @@ export default function ModalUsers({rols, isOpen, setIsOpen} : ModalUsersProps) 
 
                             <div className="mb-4 flex flex-col">
                                 <label htmlFor="nombre" className="text-gray-700 font-medium text-sm capitalize">segundo apellido</label>
-                                <input type="text" className="block w-full p-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-blue-500" id="nombre" placeholder="Ej. Lopes" 
+                                <input type="text" 
+                                className="text-sm border w-full border-gray-300 rounded-md py-2.5 pl-3 focus:border-[#4573a1] focus:border-2 outline-none" 
+                                id="nombre" placeholder="Ej. Lopes" 
                                     {...register("segundoApellido")}
                                 />
 
                             </div>
 
-
                             <div className="mb-3 flex flex-col">
                                 <label htmlFor="descripcion" className="text-gray-700 font-medium text-sm capitalize">Correo *</label>
-                                <input type="text" className="block w-full p-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-blue-500" id="descripcion" placeholder="cliente@gmail.com" 
+                                <input type="text" 
+                                className="text-sm border w-full border-gray-300 rounded-md py-2.5 pl-3 focus:border-[#4573a1] focus:border-2 outline-none" 
+                                id="descripcion" placeholder="cliente@gmail.com" 
                                     {...register("correo", {
                                         required: "El Correo es requerido"
                                     })}
@@ -172,9 +189,41 @@ export default function ModalUsers({rols, isOpen, setIsOpen} : ModalUsersProps) 
                                 )}
 
                             </div>
+                            <div className="flex flex-col mb-5">
+                                <label className="text-sm font-medium text-gray-800 capitalize mb-2">
+                                    Contraseña
+                                </label>
+                                <div className="relative">
+                                    <input 
+                                    className="text-sm border w-full border-gray-300 rounded-md py-2.5 pl-3 focus:border-[#4573a1] focus:border-2 outline-none" 
+                                    type={showPassword ? 'text' : 'password'} 
+                                    placeholder="********"
+                                        {...register('password', {
+                                            required: activeId ? false : 'el password es requerido'
+                                        })
+                                         
+                                        }
+                                    />
+                                    {errors.password && (
+                                        <ErrorMessage>{errors.password.message}</ErrorMessage>
+                                    )}
+                                    <button type="button" className="absolute right-0 top-0 h-11 px-3 hover:bg-transparent"
+                                    onClick={() => setShowPassword(!showPassword)}>
+                                        {showPassword ? (
+                                            <EyeOff size={16} color="#6c7c93" />
+                                            
+                                        ) : (
+                                            <Eye size={16} color="#6c7c93" />
+
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+
                             <div className="mb-3 flex flex-col">
                                 <label htmlFor="descripcion" className="text-gray-700 font-medium text-sm capitalize">Rol *</label>
-                                <select className="block w-full p-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-blue-500 focus:border-2"
+                                <select 
+                                className="text-sm border w-full border-gray-300 rounded-md py-2.5 pl-3 focus:border-[#4573a1] focus:border-2 outline-none"
                                     {...register("idRol", {
                                         required: "El Rol es obligatorio"
                                     })}

@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* Aquí agregas tu configuración personalizada */
+@layer utilities {
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.25s ease-out;
+  }
+
+  .animate-spin-slow {
+    animation: spin 1s linear infinite;
+  }
+}
 
 /* NAVBAR */
 .hover-panel:hover{

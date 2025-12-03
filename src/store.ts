@@ -1,7 +1,10 @@
 import { json } from "zod"
-import type { Alerta, Categories, Category, Clients, ComprasData, Product, SaleData, User } from "./types"
+import { authLoginSchema, authUserSchema, type Alerta, type AuthUser, type Categories, type Category, type Clients, type ComprasData, type LoginFormData, type Product, type SaleData, type User } from "./types"
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
+import axios from "axios"
+import api from "./lib/axios"
+import Spinner from "./components/Spinner"
 
 type PosNetStore = {
     data: Category | Clients | Product | {} | User
@@ -14,6 +17,9 @@ type PosNetStore = {
     dataCompras: ComprasData[]
     //ventas productos pendientes
     dataPendingProducts: SaleData[]
+    //auth user data
+    dataAuthProfileUser: AuthUser | {}
+
     //modal
     isOpen: boolean
     setIsOpen: (open : boolean) => void
@@ -30,8 +36,20 @@ type PosNetStore = {
     changeProducts: (Data: SaleData[]) => void
     //funciones compras
     setDataCompra: (formData: ComprasData) => Alerta
+    //Login
+    fetchLogin: (formData : LoginFormData) => Alerta
+    //auth user
+    fetchAuthData: (email : string) => void
 
 }
+
+const authData = () => {
+    const data = localStorage.getItem("auth_data")
+    const auth_data : AuthUser = data ? JSON.parse(data) as AuthUser : {} as AuthUser
+
+    return auth_data;
+}
+
 
 const productsSale = () => {
     const productos = localStorage.getItem('productos')
@@ -56,7 +74,9 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
     dataVenta: productsSale(),
     dataPendingProducts: pendingProducts(),
     data: {},
+    
     dataProductsSelected: [],
+    dataAuthProfileUser: authData(),
     set: (formData) =>{
         const { id } = formData
 
@@ -368,7 +388,50 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
 
         }
     },
+    fetchLogin: async (formData) => {
+        try {
+            const response = await api.post(`/auth/login`, formData);
+            const result = authLoginSchema.safeParse(response.data)
+            if (result.success) {
+                localStorage.setItem("accessToken", result.data.token);
+                await get().fetchAuthData(formData.email)
+              
+                return { isSuccess: true, mensaje: `authenticado` }
+            
+            }else{
+                return { isSuccess: false, mensaje: 'error en la autenticacion' }
+            
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+        
+                throw new Error(error.response?.data.detail);
+            } 
+        }
+    },
 
+    
+    fetchAuthData: async (email) => {
+ 
+        try {
+
+            const response = await api.get(`/auth/profile?email=${email}`);
+            const result = authUserSchema.safeParse(response.data)
+
+            if (result.success) {
+                set(() => ({
+                    dataAuthProfileUser: result.data                        
+                }))
+            }
+            const auth_data = get().dataAuthProfileUser
+            localStorage.setItem('auth_data', JSON.stringify(auth_data))
+
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                throw new Error(error.response?.data.detail);
+            } 
+        }
+    }
 
 })))
 

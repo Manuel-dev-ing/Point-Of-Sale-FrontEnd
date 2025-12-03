@@ -1,6 +1,6 @@
-import { isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { rolsSchema, usersSchema, type User, type UserFormData } from "../types";
+import { respuestaAutenticacion, rolsSchema, usersSchema, type User, type UserFormData } from "../types";
 
 
 export async function getRols() {
@@ -30,8 +30,9 @@ export async function getUsers() {
     try {
 
         const response = await api('/users');
+        
         const resultado = usersSchema.safeParse(response.data)
-
+        
         if (resultado.success) {
             return resultado.data
         }
@@ -50,15 +51,13 @@ export async function createUser(data: UserFormData) {
     try {
         const payload = {...data, idRol: Number(data.idRol)}
 
-        const response = await api.post('/users', payload);
-        console.log(response);
-      
+        await api.post('/users', payload);
 
     } catch (error) {
-        if (isAxiosError(error) && error.response) {
-            throw new Error(error.response.data.error);
-            
-        }
+        if (axios.isAxiosError(error)) {
+        
+            throw new Error(error.response?.data.detail);
+        } 
     }
 
 }
@@ -90,6 +89,28 @@ export async function updateUser(data: User) {
         const response = await api.put(`/users/${data.id}`, data);
         console.log(response);
       
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+            
+        }
+    }
+
+}
+
+export async function refreshToken() {
+    
+    try {
+        
+
+        const response = await api.post('/auth/refresh');
+        const result = respuestaAutenticacion.safeParse(response.data) 
+        console.log(result);
+        
+        if (result.success) {
+            return result.data
+        }
 
     } catch (error) {
         if (isAxiosError(error) && error.response) {

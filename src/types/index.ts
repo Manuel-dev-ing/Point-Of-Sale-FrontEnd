@@ -161,8 +161,10 @@ export const users = z.object({
     nombre: string(),
     primerApellido: string(),
     segundoApellido: string().nullable(),
-    correo: string(),
-    estado: z.boolean()
+    correo: z.string(),
+    password: z.string().nullable(),
+    estado: z.boolean(),
+    fechaCreacion: z.string().nullable()
 
 })
 
@@ -174,6 +176,28 @@ export const resumeDashboard = z.object({
     clientes: z.number()
 }) 
 
+//auth user 
+export const authUser = z.object({
+    id: z.number(),
+    idRol: z.number(),
+    nombreRol: z.string(),
+    nombre: z.string(),
+    primerApellido: z.string(),
+    segundoApellido: z.string().nullable(),
+})
+
+export const respuestaAutenticacion = z.object({
+    expiracion: z.string(),
+    token: z.string(),
+    refreshToken: z.string()
+})
+
+//Auth
+export type ResponseAuthentication = z.infer<typeof respuestaAutenticacion>
+
+// login
+export const authLoginSchema = respuestaAutenticacion;
+
 //dashboard
 export const resumeDashboardShema = resumeDashboard;
 
@@ -184,7 +208,13 @@ export type Rol = z.infer<typeof rol>
 //users
 export const usersSchema = z.array(users)
 export type User = z.infer<typeof users>
-export type UserFormData = Pick<User, 'correo' | 'idRol' | 'nombre' | 'primerApellido' | 'segundoApellido' >
+export type UserFormData = Pick<User, 'correo' | 'idRol' | 'nombre' | 'primerApellido' | 'segundoApellido' | 'password'>
+export type UserUpdateFormData = Pick<User, 'id' | 'idRol' | 'nombre' | 'correo' | 'primerApellido' | 'segundoApellido' | 'password' | 'estado'>
+
+export const authUserSchema = authUser
+
+export type AuthUser = z.infer<typeof authUser>
+
 
 //Ventas Categorias
 export const ventasCategoriasShema = z.array(ventasCategorias)
@@ -253,3 +283,11 @@ export type Alerta = {
   isSuccess: boolean
   mensaje: string
 }
+
+//Login Form Data
+export type LoginFormData = {
+    email: string
+    password: string
+
+}
+
