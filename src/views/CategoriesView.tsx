@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import ModalCategories from '../components/categories/ModalCategories';
 import type { Categories, Category } from '../types';
 import { usePosNetStore } from '../store';
+import CardStatistics from '../components/CardStatistics';
+import SearchInput from '../components/SearchInput';
 
 
 
@@ -73,44 +75,18 @@ export default function CategoriesView() {
         </div>
 
         <div className='border border-gray-300 mt-5 p-4 rounded bg-white '>
-            
-            <form className="max-w-md ">   
-                <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
-                <div className="relative">
-                    <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                       <Search size={16} color='#6c7c93' />
-                    </div>
-                    <input type="search" id="default-search" className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-blue-500 " placeholder="Buscar categorias..." onChange={handleChangeBuscar} />
-              
-                </div>
-            </form>
+
+            <SearchInput handleChangeBuscar={handleChangeBuscar} />    
 
         </div>
         
         <div className='flex justify-between'>
-        
-            <div className='flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded w-80'>
-                <FolderOpen size={20} color='#4573a1' />
-                <div className='flex flex-col'>
-                    <p className='text-gray-500 text-sm font-normal'>Total Categorias</p>
-                    <span className='font-bold text-2xl text-gray-800'>{ data?.length }</span>
-                </div>
+            
+            <CardStatistics label='Total Categorias' value={data?.length} Icon={FolderOpen} iconColor='#4573a1' />
 
-            </div>
-            <div className='flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded w-80'>
-                <Package size={20} color='#44a166' />
-                <div className='flex flex-col'>
-                    <p className='text-gray-500 text-sm font-normal'>Total Productos</p>
-                    <span className='font-bold text-2xl text-gray-800'>77</span>
-                </div>
-            </div>
-            <div className='flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded w-80'>
-                <FolderOpen size={20} color='#e8ba30' />
-                <div className='flex flex-col'>
-                    <p className='text-gray-500 text-sm font-normal'>Promedio por Categoria</p>
-                    <span className='font-bold text-2xl text-gray-800'>11</span>
-                </div>
-            </div>
+            <CardStatistics label='Total Productos' value={77} Icon={Package} iconColor='#44a166' />
+
+            <CardStatistics label='Promedio por Categoria' value={11} Icon={FolderOpen} iconColor='#e8ba30' />
         
         </div>
 

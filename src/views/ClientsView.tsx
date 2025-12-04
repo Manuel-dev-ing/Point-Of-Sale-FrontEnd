@@ -6,6 +6,8 @@ import type { Clients } from '../types';
 import ModalClients from '../components/clientes/ModalClients';
 import { toast } from 'react-toastify';
 import { usePosNetStore } from '../store';
+import CardStatistics from '../components/CardStatistics';
+import SearchInput from '../components/SearchInput';
 
 export default function ClientsView() {
 
@@ -76,42 +78,17 @@ export default function ClientsView() {
 
         <div className='border border-gray-300 mt-5 p-4 rounded bg-white '>
             
-            <form className="max-w-md ">   
-            
-                <div className="relative">
-                    <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                       <Search size={16} color='#6c7c93' />
-                    </div>
-                    <input type="search" id="default-search" className="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:border-blue-500 " placeholder="Busca por nombre, correo o telefono" onChange={handleChangeBuscar} />
-              
-                </div>
-            </form>
+            <SearchInput handleChangeBuscar={handleChangeBuscar} />
 
         </div>
-        <div className='flex justify-between'>
-        
-            <div className='flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded w-80'>
-                <Users size={20} color='#4573a1' />
-                <div className='flex flex-col'>
-                    <p className='text-gray-500 text-sm font-normal'>Total Clientes</p>
-                    <span className='font-bold text-2xl text-gray-800'>{ data?.length }</span>
-                </div>
 
-            </div>
-            <div className='flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded w-80'>
-                <ShoppingBag size={20} color='#44a166' />
-                <div className='flex flex-col'>
-                    <p className='text-gray-500 text-sm font-normal'>Compras Totales</p>
-                    <span className='font-bold text-2xl text-gray-800'>77</span>
-                </div>
-            </div>
-            <div className='flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded w-80'>
-                <DollarSign size={20} color='#e8ba30' />
-                <div className='flex flex-col'>
-                    <p className='text-gray-500 text-sm font-normal'>Ingresos Totales</p>
-                    <span className='font-bold text-2xl text-gray-800'>$11,569</span>
-                </div>
-            </div>
+        <div className='flex justify-between'>
+     
+            <CardStatistics label='Total Clientes' value={data?.length} Icon={Users} iconColor='#4573a1' />
+
+            <CardStatistics label='Compras Totales' value={77} Icon={ShoppingBag} iconColor='#44a166' />
+
+            <CardStatistics label='Ingresos Totales' value={11569} Icon={DollarSign} iconColor='#44a166' />
         
         </div>
 
@@ -192,8 +169,6 @@ export default function ClientsView() {
                             </tr>
 
                         ))}
-
-                        
                        
                     </tbody>
                 </table>

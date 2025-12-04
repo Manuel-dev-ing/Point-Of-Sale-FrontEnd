@@ -2,10 +2,7 @@
 import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, Users, Warehouse } from 'lucide-react'
 import { ToastContainer } from 'react-toastify'
 
-import { Link, Navigate, Outlet } from 'react-router-dom'
-import { usePosNetStore } from '../store'
-import { useEffect } from 'react'
-import { da } from 'zod/v4/locales'
+import { Link, Outlet } from 'react-router-dom'
 import type { AuthUser } from '../types'
 
 type AdminLayoutProps = {
@@ -18,12 +15,12 @@ export default function AdminLayout({user} : AdminLayoutProps) {
     console.log(user);
     
 
-    if (Object.keys(user).length === 0) {
-        console.log("Redireccionando a la vista Login");
+    // if (Object.keys(user).length === 0) {
+    //     console.log("Redireccionando a la vista Login");
         
-        return <Navigate to={"/login"} replace />
-    }
-    console.log("Autenticado...");
+    //     return <Navigate to={"/login"} replace />
+    // }
+    // console.log("Autenticado...");
     
     
 

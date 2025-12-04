@@ -1,5 +1,5 @@
 import { json } from "zod"
-import { authLoginSchema, authUserSchema, type Alerta, type AuthUser, type Categories, type Category, type Clients, type ComprasData, type LoginFormData, type Product, type SaleData, type User } from "./types"
+import { authLoginSchema, authUserSchema, type Alerta, type AuthUser, type Categories, type Category, type Clients, type ComprasData, type LoginFormData, type Product, type ResumenVenta, type SaleData, type User } from "./types"
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
 import axios from "axios"
@@ -19,7 +19,10 @@ type PosNetStore = {
     dataPendingProducts: SaleData[]
     //auth user data
     dataAuthProfileUser: AuthUser | {}
-
+    //fechas para los reportes
+    periodo: string
+    fechaInicio: string
+    fechaFin: string
     //modal
     isOpen: boolean
     setIsOpen: (open : boolean) => void
@@ -37,9 +40,14 @@ type PosNetStore = {
     //funciones compras
     setDataCompra: (formData: ComprasData) => Alerta
     //Login
-    fetchLogin: (formData : LoginFormData) => Alerta
+    fetchLogin: (formData: LoginFormData) => Alerta
     //auth user
-    fetchAuthData: (email : string) => void
+    fetchAuthData: (email: string) => void
+    //fechas
+    setPeriodo: (periodo: string) => void
+    setFechaInicio: (fechaInicio: string) => void
+    setFechaFin: (fechaFin: string) => void
+   
 
 }
 
@@ -74,10 +82,12 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
     dataVenta: productsSale(),
     dataPendingProducts: pendingProducts(),
     data: {},
-    
+    periodo: '',
+    fechaInicio: '',
+    fechaFin: '',
     dataProductsSelected: [],
     dataAuthProfileUser: authData(),
-    set: (formData) =>{
+    set: (formData) => {
         const { id } = formData
 
         set(() => ({
@@ -388,6 +398,7 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
 
         }
     },
+    //Login
     fetchLogin: async (formData) => {
         try {
             const response = await api.post(`/auth/login`, formData);
@@ -409,8 +420,6 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
             } 
         }
     },
-
-    
     fetchAuthData: async (email) => {
  
         try {
@@ -431,7 +440,36 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
                 throw new Error(error.response?.data.detail);
             } 
         }
-    }
+    },
+    //fechas
+    setPeriodo: (periodo) => {
+        if (periodo) {
+            set(() => ({
+                periodo: periodo                        
+            }))
+            return
+        }
+        console.log("no existe el periodo.");
+    },
+    setFechaInicio: (fechaInicio) => {
+        if (fechaInicio) {
+            set(() => ({
+                fechaInicio: fechaInicio                        
+            }))
+            return
+        }
+        console.log("No existe la fecha de Inicio.");
+    },
+    setFechaFin: (fechaFin) => {
+        if (fechaFin) {
+            set(() => ({
+                fechaFin: fechaFin                        
+            }))
+            return
+        }
+        console.log("No existe la fecha de Fin.");
+    },
+    
 
 })))
 

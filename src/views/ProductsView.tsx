@@ -7,6 +7,8 @@ import { getCategories } from '../services/CategoryAPI'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { usePosNetStore } from '../store'
+import CardStatistics from '../components/CardStatistics'
+import SearchInput from '../components/SearchInput'
 
 export default function ProductsView() {
     const [product, setProducts] = useState<Product[]>()
@@ -119,15 +121,7 @@ export default function ProductsView() {
 
         <div className='border border-gray-300 mt-5 p-4 rounded bg-white flex gap-3 justify-between'>
             
-            <form className="max-w-md ">   
-                <div className="relative">
-                    <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                        <Search size={16} color='#6c7c93' />
-                    </div>
-                    <input type="search" id="default-search" className="block w-3xl p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded bg-gray-50 focus:border-blue-500 " placeholder="Buscar por nombre o por codigo de barras..." onChange={handleChangeBuscar} />
-                
-                </div>
-            </form>
+            <SearchInput handleChangeBuscar={handleChangeBuscar} />
 
             <select id="countries" className="bg-gray-50 border border-gray-300
              text-gray-700 text-sm rounded focus:ring-blue-500 focus:border-blue-500 p-2.5 w-52" 
@@ -144,28 +138,11 @@ export default function ProductsView() {
 
         <div className='flex justify-between'>
         
-            <div className='flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded w-80'>
-                <Package size={20} color='#4573a1' />
-                <div className='flex flex-col'>
-                    <p className='text-gray-500 text-sm font-normal'>Total Productos</p>
-                    <span className='font-bold text-2xl text-gray-800'>{ data?.length }</span>
-                </div>
+            <CardStatistics label='Total Producto' value={data?.length} Icon={Package} iconColor='#4573a1' />
 
-            </div>
-            <div className='flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded w-80'>
-                <TriangleAlert size={20} color='#e8ba30' />
-                <div className='flex flex-col'>
-                    <p className='text-gray-500 text-sm font-normal'>Stock Bajo</p>
-                    <span className='font-bold text-2xl text-yellow-500'>{stock_bajo}</span>
-                </div>
-            </div>
-            <div className='flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded w-80'>
-                <Package size={20} color='#44a166' />
-                <div className='flex flex-col'>
-                    <p className='text-gray-500 text-sm font-normal'>Valor Inventario</p>
-                    <span className='font-bold text-2xl text-green-600'>{valor_inventario?.toFixed(2)}</span>
-                </div>
-            </div>
+            <CardStatistics label='Stock Bajo' value={stock_bajo} Icon={TriangleAlert} iconColor='#e8ba30' />
+
+            <CardStatistics label='Valor Inventario' value={valor_inventario?.toFixed(2)} Icon={Package} iconColor='#44a166' />
         
         </div>
 

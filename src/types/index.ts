@@ -222,9 +222,11 @@ export type VentaCategoria = z.infer<typeof ventasCategorias>
 
 //Top Usuarios
 export const topUsuariosShema = z.array(topUsuarios)
+export type TopUsuarios = z.infer<typeof topUsuariosShema>
 
 //Top Products
 export const topProductsSchema = z.array(topProducts);
+export type TopProducts = z.infer<typeof topProductsSchema>
 
 //Resumen Ventas
 export const resumenVentasSchema = z.array(resumenVenta)
