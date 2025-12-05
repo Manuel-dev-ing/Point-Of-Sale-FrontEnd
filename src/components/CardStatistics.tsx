@@ -6,16 +6,19 @@ type CardStatisticsProps = {
     value: number | string | undefined
     Icon?: LucideIcon
     iconColor?: string
-    variant?: string 
+    variant?: string
+    className?: string | undefined 
 }   
 
-export default function CardStatistics({label, value, Icon, iconColor, variant = "w-80"} : CardStatisticsProps) {
+export default function CardStatistics({label, value, Icon, iconColor, variant = "w-80", className} : CardStatisticsProps) {
 
     const baseStyles = "flex items-center gap-2 border border-gray-300 p-3 bg-white mt-4 rounded"
- 
+    const styles = className ? className : baseStyles
+  
+    
     return (
         <>
-            <div className={`${baseStyles} ${variant}`}>
+            <div className={`${styles} ${variant}`}>
                 {/* <Package size={20} color='#4573a1' /> */}
                 {Icon && (
                     <Icon size={20} color={iconColor} />

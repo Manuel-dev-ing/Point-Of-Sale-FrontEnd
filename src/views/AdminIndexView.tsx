@@ -9,6 +9,8 @@ import { format, weekEnd, weekStart } from '@formkit/tempo'
 import { getResumenVentas } from '../services/ReportsAPI'
 import { calcularIVA } from '../helpers'
 import type { ResumenVenta } from '../types'
+import CardStatisticsMedium from '../components/CardStatisticsMedium'
+import ListProducts from '../components/ListProducts'
 
 export default function AdminIndexView() {
   const [fechaInicio, setfechaInicio] = useState<string>(format(weekStart(new Date()), "YYYY-MM-DD", "en"))
@@ -25,9 +27,6 @@ export default function AdminIndexView() {
     queryKey: ['LowStockProducts'],
     queryFn: getLowStockProduts
   })
-
-  console.log(dataLowProducts);
-  
 
   const formatWeekSalesResume = (dataResumenVentas: ResumenVenta[] | undefined) => {
     const resultado = dataResumenVentas?.map(item => {
@@ -47,49 +46,14 @@ export default function AdminIndexView() {
   return (
     <>
       <section className='flex gap-4 mb-5'>
-        <div className='bg-white border border-gray-300 w-60 p-3 rounded'>
-          <div className='flex items-center justify-between px-2 mb-2'>
-            <p className='capitalize text-sm text-gray-700 font-medium'>Ventas Hoy</p>
-            <ShoppingCart
-              size={15}
-              color='#6e7e95'
-            />
-          </div>
-          <span className='font-bold px-2 text-2xl text-gray-800'>{data?.ventas}</span>
-        </div>
+      
+        <CardStatisticsMedium label='Ventas Hoy' value={data?.ventas} Icon={ShoppingCart} iconColor='#6e7e95'  /> 
 
-        <div className='bg-white border border-gray-300 w-60 p-3 rounded'>
-          <div className='flex items-center justify-between px-2 mb-2'>
-            <p className='capitalize text-sm text-gray-700 font-medium'>Ingresos Hoy</p>
-            <DollarSign
-              size={15}
-              color='#6e7e95'
-            />
-          </div>
-          <span className='font-bold px-2 text-2xl text-gray-800'>${data?.ingresos}</span>
-        </div>
+        <CardStatisticsMedium label='Ingresos Hoy' value={data?.ingresos} Icon={DollarSign} iconColor='#6e7e95' />
+     
+        <CardStatisticsMedium label='Productos' value={data?.productos} Icon={Package} iconColor='#6e7e95' />
 
-        <div className='bg-white border border-gray-300 w-60 p-3 rounded'>
-          <div className='flex items-center justify-between px-2 mb-2'>
-            <p className='capitalize text-sm text-gray-700 font-medium'>Productos</p>
-            <Package
-              size={15}
-              color='#6e7e95'
-            />
-          </div>
-          <span className='font-bold px-2 text-2xl text-gray-800'>{data?.productos}</span>
-        </div>
-
-        <div className='bg-white border border-gray-300 w-60 p-3 rounded'>
-          <div className='flex items-center justify-between px-2 mb-2'>
-            <p className='capitalize text-sm text-gray-700 font-medium'>Clientes Hoy</p>
-            <Users
-              size={15}
-              color='#6e7e95'
-            />
-          </div>
-          <span className='font-bold px-2 text-2xl text-gray-800'>{data?.clientes}</span>
-        </div>
+        <CardStatisticsMedium label='Clientes Hoy' value={data?.clientes} Icon={Users} iconColor='#6e7e95' />
 
       </section>
 
@@ -123,6 +87,7 @@ export default function AdminIndexView() {
       </section>
 
       <section className='flex justify-between'>
+
         <div className='bg-white border border-gray-300 rounded w-[511px]'>
           <p className='font-medium text-xl text-gray-800 mb-5 px-10 pt-4'>Ventas de la Semana</p>
           <SimpleBarChart data={formatWeekSalesResume(dataResumenVentas)} isVissible={false} />
@@ -138,18 +103,8 @@ export default function AdminIndexView() {
               ver todo
             </Link>
           </div>
-          {dataLowProducts?.map((item, index) => (
-            <div key={index} className='bg-[#e6ebef] px-4 py-3 mt-5  rounded '>
-              <div className='flex justify-between'>
-                <p className='text-gray-800 font-semibold text-base'>{item.nombre}</p>
-                <span className='font-bold text-lg text-yellow-500'>{item.stockInicial  }</span>
-              </div>
-              <div className='flex justify-between'>
-                <p className='text-gray-500 text-sm capitalize'>stock restante</p>
-                <span className='text-gray-500 text-sm'>unidades</span>
-              </div>
-            </div>
-          ))}
+          <ListProducts dataLowProducts={dataLowProducts} />
+         
 
         </div>
 
