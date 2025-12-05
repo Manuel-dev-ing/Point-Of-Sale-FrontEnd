@@ -5,7 +5,7 @@ import LineCharts from "../components/LineCharts";
 import PieChartWithCustomized from "../components/PieChartWithCustomized";
 import SimpleBarChart from "../components/SimpleBarChart";
 import { useQuery } from "@tanstack/react-query";
-import { getResumenVentas, getTopProducts, getTopUsuarios, ventasCategorias } from "../services/ReportsAPI";
+import { getResumenVentas, getResumeStatistics, getTopProducts, getTopUsuarios, ventasCategorias } from "../services/ReportsAPI";
 import { calcularIVA, establecerPeriodo, formatSalesResume, getMonths, } from "../helpers";
 import type { ResumenVenta } from "../types";
 import CardStatistics from "../components/CardStatistics";
@@ -40,6 +40,11 @@ export default function ReportsView() {
 
   })
   
+  const { data: statisticsData, isLoading: isLoadingStatistics } = useQuery({
+    queryFn: getResumeStatistics,
+    queryKey: ['getResumeStatistics']
+  })
+
   const { data: topProductsData, isLoading: isLoadingTopProducts } = useQuery({
     queryFn: getTopProducts,
     queryKey: ['getTopProducts']
@@ -56,7 +61,6 @@ export default function ReportsView() {
     queryKey: ['ventasCategorias']
   })
   
-  console.log(dataVentasCategorias);
   
   if (tipoPeriodos) {
     establecerPeriodo(tipoPeriodos)
@@ -197,13 +201,13 @@ export default function ReportsView() {
 
         <div className='flex justify-between gap-5'>
 
-          <CardStatistics label="Ventas Totales" value={1523} Icon={ChartColumn} iconColor="#4573a1" />
+          <CardStatistics label="Ventas Totales" value={statisticsData?.ventas} Icon={ChartColumn} iconColor="#4573a1" />
 
-          <CardStatistics label="Ingresos Totales" value={3} Icon={DollarSign} iconColor="#44a166" />
+          <CardStatistics label="Ingresos Totales" value={statisticsData?.ingresos} Icon={DollarSign} iconColor="#44a166" />
 
-          <CardStatistics label="Unidades Totales" value={15256} Icon={TrendingUp} iconColor="#e8ba30" />
+          <CardStatistics label="Unidades Totales" value={statisticsData?.unidadesTotales} Icon={TrendingUp} iconColor="#e8ba30" />
 
-          <CardStatistics label="Valor Inventario" value={56336} Icon={Users} iconColor="#667384" />    
+          <CardStatistics label="Valor Inventario" value={statisticsData?.valorInventario } Icon={Users} iconColor="#667384" />    
       
         </div> 
 

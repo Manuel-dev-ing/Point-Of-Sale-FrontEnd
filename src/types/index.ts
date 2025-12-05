@@ -124,6 +124,15 @@ export const resumenVenta = z.object({
     fecha: z.string()
 })
 
+export const resumeStatistics = z.object({
+  
+    ventas: z.number(),
+    ingresos: z.number(),
+    unidadesTotales: z.number(),
+    valorInventario: z.number()
+
+})
+
 export const topProducts = z.object({
   
     idProducto: z.number(),
@@ -215,6 +224,8 @@ export const authUserSchema = authUser
 
 export type AuthUser = z.infer<typeof authUser>
 
+//resumen estadisticas
+export const resumeStatisticsSchema = resumeStatistics
 
 //Ventas Categorias
 export const ventasCategoriasShema = z.array(ventasCategorias)

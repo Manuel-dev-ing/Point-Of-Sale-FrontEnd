@@ -1,6 +1,27 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { resumenVentasSchema, topProductsSchema, topUsuariosShema, ventasCategoriasShema } from "../types";
+import { resumenVentasSchema, resumeStatisticsSchema, topProductsSchema, topUsuariosShema, ventasCategoriasShema } from "../types";
+
+
+export async function getResumeStatistics() {
+    
+    try {
+        
+        const response = await api('/reports/resumeStatistics')
+        const result = resumeStatisticsSchema.safeParse(response.data)
+        console.log(result);
+        
+        if (result.success) {
+            return result.data
+        }
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+        }
+    }
+}
+
 
 export async function ventasCategorias() {
     
