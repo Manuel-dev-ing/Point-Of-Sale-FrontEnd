@@ -425,8 +425,11 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
         try {
 
             const response = await api.get(`/auth/profile?email=${email}`);
+            console.log(response);
+            
             const result = authUserSchema.safeParse(response.data)
-
+            console.log(result);
+            
             if (result.success) {
                 set(() => ({
                     dataAuthProfileUser: result.data                        

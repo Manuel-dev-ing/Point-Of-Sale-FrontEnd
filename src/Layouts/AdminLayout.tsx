@@ -2,27 +2,30 @@
 import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, Users, Warehouse } from 'lucide-react'
 import { ToastContainer } from 'react-toastify'
 
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Navigate, Outlet } from 'react-router-dom'
 import type { AuthUser } from '../types'
+import { use, useState } from 'react'
+import { isAdmin } from '../helpers'
 
 type AdminLayoutProps = {
-    user: AuthUser | {}
+    user: AuthUser
 }
 
+
+
 export default function AdminLayout({user} : AdminLayoutProps) {
-    
-    // const dataAuth = usePosNetStore((state) => state.dataAuthProfileUser)
     console.log(user);
+    console.log(isAdmin(user));
     
 
-    // if (Object.keys(user).length === 0) {
-    //     console.log("Redireccionando a la vista Login");
+    if (Object.keys(user).length === 0) {
+    
+        console.log("Redireccionando a la vista Login");
         
-    //     return <Navigate to={"/login"} replace />
-    // }
-    // console.log("Autenticado...");
-    
-    
+        return <Navigate to={"/login"} replace />
+    }
+
+    console.log("Autenticado...");
 
     return (
         <>
@@ -40,91 +43,106 @@ export default function AdminLayout({user} : AdminLayoutProps) {
                                 </div>
 
                                 <ul className="space-y-1 font-medium">
-                                    <li>
-                                    
-                                        <Link to={'/'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                            <LayoutDashboard
-                                                size={15}
-                                            />
-                                            <span className="ms-3 text-sm font-normal">Dashboard</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                            <ShoppingCart
-                                                size={15}
-                                            />
-                                            <span className="ms-3 text-sm font-normal">Ventas</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to={'/shopping'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                            <ShoppingBag
-                                                size={15}
-                                            />
-                                            <span className="ms-3 text-sm font-normal">Compras</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to={'/products'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                            <Package
-                                                size={15}
-                                            />
-                                            <span className="ms-3 text-sm font-normal">Productos</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to={'/categories'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                            <FolderOpen
-                                                size={15}
-                                            />
-                                            <span className="ms-3 text-sm font-normal">Categorias</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to={'/clients'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                            <Users
-                                                size={15}
-                                            />
-                                            <span className="ms-3 text-sm font-normal">Clientes</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to={'/inventory'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                            <Warehouse
-                                                size={15}
-                                            />
-                                            <span className="ms-3 text-sm font-normal">Inventario</span>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link to={'/reports'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                            <ChartColumn
-                                                size={15}
-                                            />
-                                            <span className="ms-3 text-sm font-normal">Reportes</span>
-                                        </Link>
-                                    </li>
-                                    
-                                
-                                </ul>
+                                    {isAdmin(user) ? (
 
-                                <div className='mt-3'>
-                                    <p className='capitalize text-gray-500 text-xs font-medium'>Administracion</p>
-                                </div>
+                                        <>
+                                            <li>
+                                                <Link to={'/'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                    <LayoutDashboard
+                                                        size={15}
+                                                    />
+                                                    <span className="ms-3 text-sm font-normal">Dashboard</span>
+                                                </Link>
+                                            </li>
 
-                                <ul className="space-y-1 font-medium">
-                                
-                                    <li>
-                                        <Link to={'/users'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                            <Settings
-                                                size={15}
-                                            />
-                                            <span className="ms-3 text-sm font-normal">Usuarios</span>
-                                        </Link>
-                                    </li>
-                                
+                                            <li>
+                                                <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                    <ShoppingCart
+                                                        size={15}
+                                                    />
+                                                    <span className="ms-3 text-sm font-normal">Ventas</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to={'/shopping'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                    <ShoppingBag
+                                                        size={15}
+                                                    />
+                                                    <span className="ms-3 text-sm font-normal">Compras</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to={'/products'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                    <Package
+                                                        size={15}
+                                                    />
+                                                    <span className="ms-3 text-sm font-normal">Productos</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to={'/categories'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                    <FolderOpen
+                                                        size={15}
+                                                    />
+                                                    <span className="ms-3 text-sm font-normal">Categorias</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to={'/clients'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                    <Users
+                                                        size={15}
+                                                    />
+                                                    <span className="ms-3 text-sm font-normal">Clientes</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to={'/inventory'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                    <Warehouse
+                                                        size={15}
+                                                    />
+                                                    <span className="ms-3 text-sm font-normal">Inventario</span>
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link to={'/reports'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                    <ChartColumn
+                                                        size={15}
+                                                    />
+                                                    <span className="ms-3 text-sm font-normal">Reportes</span>
+                                                </Link>
+                                            </li>
+                                            <div className='mt-3'>
+                                                <p className='capitalize text-gray-500 text-xs font-medium'>Administracion</p>
+                                            </div>
+
+                                            <ul className="space-y-1 font-medium">
+                                            
+                                                <li>
+                                                    <Link to={'/users'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                        <Settings
+                                                            size={15}
+                                                        />
+                                                        <span className="ms-3 text-sm font-normal">Usuarios</span>
+                                                    </Link>
+                                                </li>
+                                            
+                                            </ul>
+                                        </>
+                                    ) : (
+                                        <li>
+                                            <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                <ShoppingCart
+                                                    size={15}
+                                                />
+                                                <span className="ms-3 text-sm font-normal">Ventas</span>
+                                            </Link>
+                                        </li>
+                                        
+                                    )}
+                                    
                                 </ul>
+                            
+                               
                             </div>
 
                         </div>

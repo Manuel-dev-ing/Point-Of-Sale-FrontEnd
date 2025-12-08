@@ -1,7 +1,16 @@
 import { addMonth, format, monthStart, weekEnd, weekStart, yearEnd, yearStart } from "@formkit/tempo";
 import {jwtDecode} from "jwt-decode";
 import { usePosNetStore } from "../store";
-import type { ResumenVenta } from "../types";
+import type { AuthUser, ResumenVenta } from "../types";
+
+
+export const isAdmin = (user: AuthUser) => {
+  const roles = ["Cajero/Vendedor", "Administrador"]
+
+  const isAdmin = roles.every(x => user.roles?.some(r => r.nombre === x))
+
+  return isAdmin;
+}
 
 export const getMonths = (data : ResumenVenta[]) => {
   let arr_months : string[] = []        

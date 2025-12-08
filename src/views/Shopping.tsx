@@ -197,7 +197,7 @@ export default function Shopping() {
     return (
         <>
             <div className='bg-gradient-to-r from-[#4c78a5] to-[#688cb1]/50 to-70% py-1 px-2'>
-                <p className='text-white font-medium font-sans'>Compra No. 5</p>
+                <p className='text-white font-medium font-sans'>Compra No. {1}</p>
             </div>
             <div className='py-1 pl-18 flex items-center gap-2'>
                 <label className='text-gray-700 font-medium text-sm flex gap-2' htmlFor="proveedor">

@@ -188,10 +188,9 @@ export const resumeDashboard = z.object({
 //auth user 
 export const authUser = z.object({
     id: z.number(),
-    idRol: z.number(),
-    nombreRol: z.string(),
     nombre: z.string(),
     primerApellido: z.string(),
+    roles: z.array(rol),
     segundoApellido: z.string().nullable(),
 })
 
