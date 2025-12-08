@@ -3,6 +3,21 @@ import type { Venta } from "../types";
 import api from "../lib/axios";
 
 
+
+export async function totalVentas() {
+
+    try {
+        const response = await api.get('/ventas/totalVentas')
+        return response.data
+
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response ) {
+            throw new Error(error.response.data.errors);
+        }
+    }
+}
+
 export async function create_venta(venta : Venta) {
     console.log(venta);
 
@@ -15,11 +30,4 @@ export async function create_venta(venta : Venta) {
         }
     }
 }
-
-
-
-
-
-
-
 

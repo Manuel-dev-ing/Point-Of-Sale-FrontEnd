@@ -18,12 +18,12 @@ export default function AdminLayout({user} : AdminLayoutProps) {
     console.log(isAdmin(user));
     
 
-    if (Object.keys(user).length === 0) {
+    // if (Object.keys(user).length === 0) {
     
-        console.log("Redireccionando a la vista Login");
+    //     console.log("Redireccionando a la vista Login");
         
-        return <Navigate to={"/login"} replace />
-    }
+    //     return <Navigate to={"/login"} replace />
+    // }
 
     console.log("Autenticado...");
 

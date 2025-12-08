@@ -9,7 +9,7 @@ import { usePosNetStore } from '../store'
 import type { ComprasData, Product } from '../types'
 import { getAllProducts } from '../services/ProductsAPI'
 import { calcularIVA } from '../helpers'
-import { createCompra } from '../services/ComprasAPI'
+import { createCompra, totalCompras } from '../services/ComprasAPI'
 
 export default function Shopping() {
     const [codidoBarras, setCodidoBarras] = useState<string>('')
@@ -25,6 +25,13 @@ export default function Shopping() {
     const actualizarCantidad = usePosNetStore((state) => state.actualizarCantidad)
     const eliminarProducto = usePosNetStore((state) => state.eliminarProducto)
     const clearDataVenta = usePosNetStore((state) => state.clearDataVenta)
+
+    const { data: dataTotalCompras, isLoading: isLoadingTotalCompras } = useQuery({
+        queryFn: totalCompras,
+        queryKey: ["totalCompras"]
+
+    })
+
 
     const mutation = useMutation({
         mutationFn: createCompra,
@@ -197,7 +204,7 @@ export default function Shopping() {
     return (
         <>
             <div className='bg-gradient-to-r from-[#4c78a5] to-[#688cb1]/50 to-70% py-1 px-2'>
-                <p className='text-white font-medium font-sans'>Compra No. {1}</p>
+                <p className='text-white font-medium font-sans'>Compra No. {dataTotalCompras + 1}</p>
             </div>
             <div className='py-1 pl-18 flex items-center gap-2'>
                 <label className='text-gray-700 font-medium text-sm flex gap-2' htmlFor="proveedor">

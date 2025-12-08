@@ -12,6 +12,7 @@ import ModalCobrar from '../components/ventas/ModalCobrar'
 import AgregarProducto from '../components/ventas/AgregarProducto'
 import Button from '../components/Button'
 import ResumenVenta from '../components/ventas/ResumenVenta'
+import { totalVentas } from '../services/VentasAPI'
 
 const initialDataVenta = {
     idUsuario: 0,
@@ -45,12 +46,17 @@ export default function SalesPublic() {
     const setPendingProducts = usePosNetStore((state) => state.setPendingProducts)
     const setProductsSelected = usePosNetStore((state) => state.setProductsSelected)
 
+    const {data: datatotalVentas, isLoading: isLoadingTotalVentas} = useQuery({
+        queryFn: totalVentas,
+        queryKey: ['totalVentas']
+    })
+
     const { data, isLoading } = useQuery({
         queryFn: getAllProducts,
         queryKey: ['products']
     })
 
-    const { data: dataClientes, isLoading:isLoadingClients  } = useQuery({
+    const { data: dataClientes, isLoading:isLoadingClients } = useQuery({
         queryFn: getAllClients,
         queryKey: ['clients']
     })
@@ -218,7 +224,7 @@ export default function SalesPublic() {
   return (
     <>
         <div className='bg-gradient-to-r from-[#4c78a5] to-[#688cb1]/50 to-70% py-1 px-2'>
-            <p className='text-white font-medium font-sans'>Venta Ticket - 5</p>
+            <p className='text-white font-medium font-sans'>Venta Ticket - {datatotalVentas + 1}</p>
         </div>
         <div className='py-1 pl-18 flex items-center gap-2'>
             <label className='text-gray-700 font-medium text-sm flex gap-2' htmlFor="cliente">
