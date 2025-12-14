@@ -7,6 +7,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import { usePosNetStore } from "../store";
 import { toast } from "react-toastify";
 import LoadingModal from "../components/LoadingModal";
+import Alert from "../components/Alert";
 
 const initialData: LoginFormData = {
     email: "",
@@ -16,6 +17,7 @@ const initialData: LoginFormData = {
 export default function Login() {
     const [isLogginIn, setIsLogginIn] = useState<boolean>(false)
     const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [alerta, setAlerta] = useState<string>('')
     const fetchLogin = usePosNetStore((state) => state.fetchLogin)    
   
 
@@ -24,15 +26,20 @@ export default function Login() {
     const navigate = useNavigate();
 
     const handleLogin = async (data : LoginFormData) => {
+        setAlerta('')
         setIsLogginIn(true)
         const resultado = await fetchLogin(data);
+        console.log(resultado);
+        
         if (resultado.isSuccess) {
             setIsLogginIn(false)
             navigate('/')
             console.log("authenticado")
         }else{
             console.log("error");
+            setIsLogginIn(false)
 
+            setAlerta(resultado.mensaje)
         }
 
     }
@@ -60,6 +67,15 @@ export default function Login() {
                             <h2 className="capitalize font-medium text-2xl text-gray-800">iniciar sesion</h2>
                             <p className="text-gray-500 text-sm">Ingresa tus credenciales para acceder</p>
                         </div>
+                        {alerta && (
+                            <Alert alert={alerta} />
+                          
+                        )}
+                         
+
+
+                        
+                        
                         <div className="flex flex-col mb-5">
                             <label className="text-sm font-medium text-gray-800 capitalize mb-2">
                                 Correo Electronico

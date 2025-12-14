@@ -409,14 +409,15 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
               
                 return { isSuccess: true, mensaje: `authenticado` }
             
-            }else{
-                return { isSuccess: false, mensaje: 'error en la autenticacion' }
-            
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-        
-                throw new Error(error.response?.data.detail);
+                console.log("Error login: ");
+                
+                console.log(error.response?.data.detail);
+                
+                return { isSuccess: false, mensaje: error.response?.data.detail }
+                // throw new Error(error.response?.data.detail);
             } 
         }
     },
