@@ -46,7 +46,7 @@ export default function SalesPublic() {
     const setPendingProducts = usePosNetStore((state) => state.setPendingProducts)
     const setProductsSelected = usePosNetStore((state) => state.setProductsSelected)
 
-    const {data: datatotalVentas, isLoading: isLoadingTotalVentas} = useQuery({
+    const {data: datatotalVentas, isLoading: isLoadingTotalVentas} = useQuery<number>({
         queryFn: totalVentas,
         queryKey: ['totalVentas']
     })

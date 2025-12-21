@@ -2,6 +2,42 @@ import { addMonth, format, monthStart, weekEnd, weekStart, yearEnd, yearStart } 
 import {jwtDecode} from "jwt-decode";
 import { usePosNetStore } from "../store";
 import type { AuthUser, ResumenVenta } from "../types";
+import { array } from "zod";
+
+export const numeroVenta = () => {
+  const venta : number = 123
+
+  let numero = venta === 0 ? venta + 1 : venta
+  let venta_numero = numero.toString() 
+  let result
+  
+  let arr = ['0', '0', '0', '0', '0','0', '0', '0','0']
+  let last_position = (arr.length - 1)
+  
+  if (arr.length < venta_numero.length) {
+    let diference = ((venta_numero.length - arr.length) + '1' ).toString()
+    
+    for (let index = 0; index < diference.length; index++) {
+      arr.unshift("0")
+      
+    }
+
+    last_position = (arr.length-1)
+  }
+
+  if (arr.length >= venta_numero.length) {
+    
+    for (let i = 0; i < venta_numero.length; i++) {
+      arr[(last_position-(venta_numero.length - 1)) + i] = venta_numero[i]
+      
+    }
+    result = "VTA-"+arr.join("")
+    
+  }
+
+  return result
+
+}
 
 
 export const isAdmin = (user: AuthUser) => {

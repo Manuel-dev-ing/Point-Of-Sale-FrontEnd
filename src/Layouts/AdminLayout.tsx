@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify'
 import { Link, Navigate, Outlet } from 'react-router-dom'
 import type { AuthUser } from '../types'
 import { use, useState } from 'react'
-import { isAdmin } from '../helpers'
+import { isAdmin, numeroVenta } from '../helpers'
 
 type AdminLayoutProps = {
     user: AuthUser
@@ -16,6 +16,7 @@ type AdminLayoutProps = {
 export default function AdminLayout({user} : AdminLayoutProps) {
     console.log(user);
     console.log(isAdmin(user));
+    console.log("Admin Layout...");
     
 
     if (Object.keys(user).length === 0) {

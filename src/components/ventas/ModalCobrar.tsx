@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { calcularResta } from '../../helpers'
+import { calcularResta, numeroVenta } from '../../helpers'
 import type { SaleData } from '../../types'
 import { useMutation } from '@tanstack/react-query'
 import { create_venta } from '../../services/VentasAPI'
@@ -68,13 +68,13 @@ export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : Moda
     const venta = {
       idUsuario: 1,
       idCliente: 1,
-      numeroVenta: 1,
+      numeroVenta: numeroVenta(),
       subTotal: total,
       total: total,
       detalleVenta: detalleVenta
     }
 
-    mutate.mutate(venta)
+    // mutate.mutate(venta)
   }
 
   let resultado = useMemo(() => calcularResta(total, recibe), [total, recibe])
