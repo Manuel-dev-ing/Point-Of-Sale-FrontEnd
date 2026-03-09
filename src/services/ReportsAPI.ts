@@ -1,6 +1,7 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
 import { resumenVentasSchema, resumeStatisticsSchema, topProductsSchema, topUsuariosShema, ventasCategoriasShema } from "../types";
+import { usePosNetStore } from "../store";
 
 
 export async function getResumeStatistics() {
@@ -9,7 +10,7 @@ export async function getResumeStatistics() {
         
         const response = await api('/reports/resumeStatistics')
         const result = resumeStatisticsSchema.safeParse(response.data)
-        console.log(result);
+        // console.log(result);
         
         if (result.success) {
             return result.data
@@ -80,17 +81,19 @@ export async function getTopProducts() {
 }
 
 
-export async function getResumenVentas({ queryKey }) {
-
+export async function getResumenVentas({queryKey}) {
     try {
         
         const [_key, { fechaInicio, fechaFin }] = queryKey;
-   
+        
         const response = await api('/reports/resumen', {
             params: {fechaInicio, fechaFin}
         })
-        const result = resumenVentasSchema.safeParse(response.data)
         
+        const result = resumenVentasSchema.safeParse(response.data)
+        console.log(result);
+        
+
         if (result.success) {
             return result.data
         }

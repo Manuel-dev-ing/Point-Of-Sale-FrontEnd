@@ -15,10 +15,8 @@ type AdminLayoutProps = {
 
 export default function AdminLayout({user} : AdminLayoutProps) {
     console.log(user);
-    console.log(isAdmin(user));
+    console.log(!isAdmin(user));
     console.log("Admin Layout...");
-    
-
     if (Object.keys(user).length === 0) {
     
         console.log("Redireccionando a la vista Login");
@@ -46,6 +44,18 @@ export default function AdminLayout({user} : AdminLayoutProps) {
                                 <ul className="space-y-1 font-medium">
                                     {isAdmin(user) ? (
 
+                                        
+
+                                        <li>
+                                            <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                <ShoppingCart
+                                                    size={15}
+                                                />
+                                                <span className="ms-3 text-sm font-normal">Ventas</span>
+                                            </Link>
+                                        </li>
+
+                                    ) : (
                                         <>
                                             <li>
                                                 <Link to={'/'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
@@ -129,16 +139,6 @@ export default function AdminLayout({user} : AdminLayoutProps) {
                                             
                                             </ul>
                                         </>
-                                    ) : (
-                                        <li>
-                                            <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                                <ShoppingCart
-                                                    size={15}
-                                                />
-                                                <span className="ms-3 text-sm font-normal">Ventas</span>
-                                            </Link>
-                                        </li>
-                                        
                                     )}
                                     
                                 </ul>

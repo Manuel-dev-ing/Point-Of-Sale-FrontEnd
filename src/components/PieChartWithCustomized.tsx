@@ -12,8 +12,7 @@ type PieChartWithCustomizedProps = {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#9354ef'];
 
 export default function PieChartWithCustomized({ isAnimationActive = true, data }: PieChartWithCustomizedProps) {
-  console.log(data);
-  
+  // console.log(data);
   
   return (
     <>

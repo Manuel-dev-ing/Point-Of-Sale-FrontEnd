@@ -1,32 +1,30 @@
 import { ChartColumn, DollarSign, Funnel, TrendingUp, Users } from "lucide-react";
 import { useEffect, useState } from "react";
-import { format } from "@formkit/tempo";
+import { addMonth, format, monthStart, weekEnd, weekStart, yearEnd, yearStart } from "@formkit/tempo";
 import LineCharts from "../components/LineCharts";
 import PieChartWithCustomized from "../components/PieChartWithCustomized";
 import SimpleBarChart from "../components/SimpleBarChart";
 import { useQuery } from "@tanstack/react-query";
 import { getResumenVentas, getResumeStatistics, getTopProducts, getTopUsuarios, ventasCategorias } from "../services/ReportsAPI";
-import { calcularIVA, establecerPeriodo, formatSalesResume, getMonths, } from "../helpers";
+import { calcularIVA, formatSalesResume } from "../helpers";
 import type { ResumenVenta } from "../types";
 import CardStatistics from "../components/CardStatistics";
 
 import TableTopProducts from "../components/TableTopProducts";
 import TableTopUsers from "../components/TableTopUsers";
-import { usePosNetStore } from "../store";
+
 
 const reportes = ['ventas']
 const periodos = ['semana', 'mes', 'trimestre', 'anio']
 const arrTopProducts = ['Producto', 'Ventas', 'Ingresos']
 const arrTopCajeros = ['Cajero', 'Ventas', 'Ingresos']
 
-export default function ReportsView() {
-  const fechaInicio = usePosNetStore((state) => state.fechaInicio)
-  const setFechaInicio = usePosNetStore((state) => state.setFechaInicio)
-  
-  const fechaFin = usePosNetStore((state) => state.fechaFin)
-  const setFechaFin = usePosNetStore((state) => state.setFechaFin)
-  
-  const periodo = usePosNetStore((state) => state.periodo)
+export default function ReportsView() {  
+  //state
+  const [fechaFin, setFechaFin] = useState<string>('')
+  const [fechaInicio, setFechaInicio] = useState<string>('')
+
+  const [periodo, setPeriodo] = useState<string>('')
 
   const [tipoReporte, setTipoReporte] = useState<string>('ventas')
   const [tipoPeriodos, setTipoPeriodos] = useState<string>('semana')
@@ -37,9 +35,10 @@ export default function ReportsView() {
     queryKey: ['resumenVentas', { fechaInicio, fechaFin }],
     queryFn: getResumenVentas,
     enabled: !!fechaInicio && !!fechaFin
-
   })
-  
+
+  // console.log(data);
+
   const { data: statisticsData, isLoading: isLoadingStatistics } = useQuery({
     queryFn: getResumeStatistics,
     queryKey: ['getResumeStatistics']
@@ -60,14 +59,55 @@ export default function ReportsView() {
     queryFn: ventasCategorias,
     queryKey: ['ventasCategorias']
   })
-  
-  
-  if (tipoPeriodos) {
-    establecerPeriodo(tipoPeriodos)
-  }
 
+  useEffect(() => {
+    console.log(tipoPeriodos);
+    switch (tipoPeriodos) {
+      case 'semana':
+        let week_end = format(weekEnd(new Date()), "YYYY-MM-DD", "en") 
+        let week_start = format(weekStart(new Date()), "YYYY-MM-DD", "en")
+        
+
+        setPeriodo('semana')
+        setFechaInicio(week_start)
+        setFechaFin(week_end)
+
+        break;
+      case 'mes':
+        let month_start = format(yearStart(new Date()), "YYYY-MM-DD", "en")
+
+        let month_end = format(yearEnd(new Date()), "YYYY-MM-DD", "en")
+        setPeriodo('mes')
+        setFechaInicio(month_start)
+        setFechaFin(month_end)
+        
+        break;
+      case 'trimestre':
+        let startTrim = format(addMonth(new Date(), -3), "YYYY-MM-DD", "en");
+        let lastTrim = format(monthStart(new Date()), "YYYY-MM-DD", "en")
+        setPeriodo('trimestre')
+        setFechaInicio(startTrim)
+        setFechaFin(lastTrim)
+
+        break;
+      case 'anio':
+        let year_start = format(yearStart(new Date()), "YYYY-MM-DD", "en")
+
+        let year_end = format(yearEnd(new Date()), "YYYY-MM-DD", "en") 
+        setFechaInicio(year_start)
+        setFechaFin(year_end)
+        setPeriodo('anio')
+        break;
+
+      default:
+        break;
+    }
+
+  },[tipoPeriodos])
+  
   
   useEffect(() => {
+
     if (!data?.length) return;
     
     if (periodo === 'semana') {
@@ -81,24 +121,27 @@ export default function ReportsView() {
       setDataChart(resultado)
       
     } else if(periodo === 'trimestre'){
-      const arr_months = getMonths(data)
       
-      const arr = formatSalesResume(data, arr_months)
+      const arr = formatSalesResume(data)
+
       setDataChart(arr)
-
-
+      
+      
     } else if(periodo === 'anio'){
       
-      const arr_months_anio = getMonths(data)
-
-      const arr = formatSalesResume(data, arr_months_anio)
+      const arr = formatSalesResume(data)
 
       setDataChart(arr)
+
+    }else if(periodo === 'mes'){
+      
+      const arr = formatSalesResume(data)
+      
+      setDataChart(arr)
+
     }
         
   }, [data, periodo])
-
-
 
   const handleSelectTipo = (e: React.ChangeEvent<HTMLSelectElement>) => {
     console.log(e.target.value);
@@ -106,6 +149,8 @@ export default function ReportsView() {
   }
 
   const handleSelectPeriodo = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log("handleSelectPeriodo: ", e.target.value);
+    
     setTipoPeriodos(e.target.value)
   }
 
@@ -216,11 +261,11 @@ export default function ReportsView() {
           <div className="border border-gray-300 bg-white p-2 w-full rounded-md">
             <h3 className="text-gray-800 text-xl font-semibold">
               Ventas por <span className="capitalize">{ mostrarTipoPeriodo(tipoPeriodos)}</span> 
-              <div className="mt-5 ">
+            </h3>
+              <div className="mt-5">
                 <LineCharts data={dataChart} />
 
               </div>
-            </h3>
           </div>
 
           <div className="border border-gray-300 bg-white p-3 w-full rounded-md mt-3">
