@@ -2,21 +2,23 @@
 import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, Users, Warehouse } from 'lucide-react'
 import { ToastContainer } from 'react-toastify'
 
-import { Link, Navigate, Outlet } from 'react-router-dom'
+import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import type { AuthUser } from '../types'
 import { use, useState } from 'react'
 import { isAdmin, numeroVenta } from '../helpers'
+import { usePosNetStore } from '../store'
 
 type AdminLayoutProps = {
     user: AuthUser
 }
 
-
-
 export default function AdminLayout({user} : AdminLayoutProps) {
     console.log(user);
     console.log(!isAdmin(user));
     console.log("Admin Layout...");
+    const logout = usePosNetStore((state) => state.logout)
+
+    const navigate = useNavigate();
     if (Object.keys(user).length === 0) {
     
         console.log("Redireccionando a la vista Login");
@@ -25,6 +27,12 @@ export default function AdminLayout({user} : AdminLayoutProps) {
     }
 
     console.log("Autenticado...");
+
+    const handleLogout = () => {
+        console.log("cerrando sesion...");
+        logout()
+        navigate('/login')
+    }
 
     return (
         <>
@@ -43,9 +51,6 @@ export default function AdminLayout({user} : AdminLayoutProps) {
 
                                 <ul className="space-y-1 font-medium">
                                     {isAdmin(user) ? (
-
-                                        
-
                                         <li>
                                             <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                                 <ShoppingCart
@@ -149,14 +154,16 @@ export default function AdminLayout({user} : AdminLayoutProps) {
                         </div>
                         <div className="flex-grow"></div>
 
-                        <div className='py-4 px-4 border-t-1 border-gray-300 flex items-center gap-3'>
-                            <LogOut
-                                size={18}
-                                color='#667384'
-                                strokeWidth={3}
-                            />
-
-                            <p className='font-medium text-gray-700 text-sm'>Cerrar Sesion</p>
+                        <div className='py-4 px-4 border-t-1 border-gray-300 '>
+                            <a onClick={() => handleLogout()} className='font-medium text-gray-700 text-sm flex items-center gap-3 p-2 rounded-lg cursor-pointer hover:bg-[#e6ebef]'>
+                                <LogOut
+                                    size={18}
+                                    color='#667384'
+                                    strokeWidth={3}
+                                />
+                                
+                                Cerrar Sesion
+                            </a>
                         </div>
                     </aside>
 

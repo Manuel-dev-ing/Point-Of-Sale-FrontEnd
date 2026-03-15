@@ -36,10 +36,13 @@ type PosNetStore = {
     //state para guardar los elementos seleccionados
     dataProductsSelected: number[]
     setProductsSelected: (ids : number[]) => void
+    //log out
+    logout: () => void
     changeProducts: (Data: SaleData[]) => void
     //funciones compras
     setDataCompra: (formData: ComprasData) => Alerta
     //Login
+
     fetchLogin: (formData: LoginFormData) => Alerta
     //auth user
     fetchAuthData: (email: string) => void
@@ -473,7 +476,11 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
         }
         console.log("No existe la fecha de Fin.");
     },
-    
+    logout: () => {
+        console.log("logout...");
+        
+        localStorage.clear();
+    }
 
 })))
 
