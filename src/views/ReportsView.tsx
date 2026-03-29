@@ -12,6 +12,7 @@ import CardStatistics from "../components/CardStatistics";
 
 import TableTopProducts from "../components/TableTopProducts";
 import TableTopUsers from "../components/TableTopUsers";
+import Spinner from "../components/Spinner";
 
 
 const reportes = ['ventas']
@@ -176,6 +177,10 @@ export default function ReportsView() {
     }
 
     return periodo
+  }
+
+  if(isLoading){
+    return <Spinner />
   }
 
   return (

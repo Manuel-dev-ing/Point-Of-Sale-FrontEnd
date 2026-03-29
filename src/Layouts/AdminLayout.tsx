@@ -4,8 +4,7 @@ import { ToastContainer } from 'react-toastify'
 
 import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import type { AuthUser } from '../types'
-import { use, useState } from 'react'
-import { isAdmin, numeroVenta } from '../helpers'
+import { isAdmin } from '../helpers'
 import { usePosNetStore } from '../store'
 
 type AdminLayoutProps = {
@@ -13,9 +12,7 @@ type AdminLayoutProps = {
 }
 
 export default function AdminLayout({user} : AdminLayoutProps) {
-    console.log(user);
-    console.log(!isAdmin(user));
-    console.log("Admin Layout...");
+    
     const logout = usePosNetStore((state) => state.logout)
 
     const navigate = useNavigate();
@@ -26,7 +23,6 @@ export default function AdminLayout({user} : AdminLayoutProps) {
         return <Navigate to={"/login"} replace />
     }
 
-    console.log("Autenticado...");
 
     const handleLogout = () => {
         console.log("cerrando sesion...");

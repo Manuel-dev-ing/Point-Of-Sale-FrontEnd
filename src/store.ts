@@ -1,10 +1,8 @@
-import { json } from "zod"
-import { authLoginSchema, authUserSchema, type Alerta, type AuthUser, type Categories, type Category, type Clients, type ComprasData, type LoginFormData, type Product, type ResumenVenta, type SaleData, type User } from "./types"
+import { authLoginSchema, authUserSchema, type Alerta, type AuthUser, type Category, type Clients, type ComprasData, type LoginFormData, type Product, type SaleData, type User } from "./types"
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
 import axios from "axios"
 import api from "./lib/axios"
-import Spinner from "./components/Spinner"
 
 type PosNetStore = {
     data: Category | Clients | Product | {} | User

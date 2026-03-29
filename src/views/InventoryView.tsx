@@ -8,6 +8,7 @@ import { getCategories } from '../services/CategoryAPI'
 import type { Product } from '../types'
 import CardStatistics from '../components/CardStatistics'
 import SearchInput from '../components/SearchInput'
+import Spinner from '../components/Spinner'
 
 export default function InventoryView() {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -85,6 +86,10 @@ export default function InventoryView() {
   const valor_inventario = data_products?.reduce((total, item) => {
     return total + item.precio
   } , 0)
+
+  if(isLoading){
+    return <Spinner />
+  } 
 
   return (
     <>
