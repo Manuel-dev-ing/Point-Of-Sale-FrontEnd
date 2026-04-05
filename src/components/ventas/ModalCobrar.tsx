@@ -68,13 +68,13 @@ export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : Moda
     const venta = {
       idUsuario: 1,
       idCliente: 1,
-      numeroVenta: numeroVenta(),
+      numeroVenta: numeroVenta()!,
       subTotal: total,
       total: total,
       detalleVenta: detalleVenta
     }
 
-    // mutate.mutate(venta)
+    mutate.mutate(venta)
   }
 
   let resultado = useMemo(() => calcularResta(total, recibe), [total, recibe])
