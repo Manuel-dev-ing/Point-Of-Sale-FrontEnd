@@ -27,6 +27,9 @@ export default function InventoryView() {
     queryKey: ['moviments']
   })
 
+  console.log(data_movements);
+  
+
   const { data: data_categories, isLoading: isLoadingCategories } = useQuery({
     queryFn: getCategories,
     queryKey: ['categories']
@@ -277,7 +280,7 @@ export default function InventoryView() {
                     {item.motivo}
                   </th>
                   <th scope="col" className="px-6 py-3 font-medium text-gray-700">
-                    Cajero 1
+                    {item.roles[0].nombre}
                   </th>
                 </tr>
 

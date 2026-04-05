@@ -31,6 +31,7 @@ export const numeroVenta = () => {
       arr[(last_position-(venta_numero.length - 1)) + i] = venta_numero[i]
       
     }
+    
     result = "VTA-"+arr.join("")
     
   }

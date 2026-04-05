@@ -92,7 +92,7 @@ const detalleVenta = z.object({
 export const venta = z.object({
     idUsuario: z.number(),
     idCliente: z.number(),
-    numeroVenta: z.number(),
+    numeroVenta: z.string(),
     subTotal: z.number(),
     total: z.number(),
     detalleVenta: z.array(detalleVenta)
@@ -107,11 +107,18 @@ const compra = z.object({
     DetalleCompra: z.array(detalleVenta)
 })
 
+//rols
+export const rol = z.object({
+    id: number(),
+    nombre: string()
+})
+
 // movimientos schema
 export const movimiento = z.object({
     id: z.number(),
     idUsuario: z.number(),
     idProducto: z.number(),
+    roles: z.array(rol),
     tipo: z.string(),
     cantidad: z.number(),
     motivo: z.string(),
@@ -156,11 +163,7 @@ export const ventasCategorias = z.object({
     categoria: z.string()
 })
 
-//rols
-export const rol = z.object({
-    id: number(),
-    nombre: string()
-})
+
 
 //users
 export const users = z.object({

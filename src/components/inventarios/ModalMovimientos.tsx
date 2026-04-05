@@ -61,7 +61,7 @@ export default function ModalMovimientos({ isOpen, setIsOpen, idProducto } : Mod
         console.log("guardando...");
         
         const movimiento = {
-            idUsuario: 1,
+            idUsuario: 10,
             idProducto: idProducto,
             movimiento: data.movimiento,
             cantidad: Number( data.cantidad),
