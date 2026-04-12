@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { calcularResta, numeroVenta } from '../../helpers'
-import type { SaleData } from '../../types'
+import type { AuthUser, SaleData } from '../../types'
 import { useMutation } from '@tanstack/react-query'
 import { create_venta } from '../../services/VentasAPI'
 import { toast } from 'react-toastify'
@@ -20,6 +20,8 @@ export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : Moda
   const [nameSales, setNameSales] = useState<string>('sales')
   
   const clearDataVenta = usePosNetStore((state) => state.clearDataVenta)
+  const dataAuthProfileUser = usePosNetStore((state) => state.dataAuthProfileUser as AuthUser)
+  
 
   const mutate = useMutation({
     mutationFn: create_venta,
@@ -66,7 +68,7 @@ export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : Moda
     })
 
     const venta = {
-      idUsuario: 1,
+      idUsuario: dataAuthProfileUser.id,
       idCliente: 1,
       numeroVenta: numeroVenta()!,
       subTotal: total,
@@ -137,9 +139,7 @@ export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : Moda
                   </button>
               </div>
           </div>
-
-
-
+          
         </div>
       )}
     

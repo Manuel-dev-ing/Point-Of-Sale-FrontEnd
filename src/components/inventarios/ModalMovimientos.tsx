@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form"
 import ErrorMessage from "../ErrorMessage"
-import type { MovimientoFormData } from "../../types"
+import type { AuthUser, MovimientoFormData } from "../../types"
 import { useMutation } from "@tanstack/react-query"
 import { createMovement } from "../../services/InventarioAPI"
 import { toast } from "react-toastify"
 import { useState } from "react"
+import { usePosNetStore } from "../../store"
 
 type ModalChangeProductProps = {
     isOpen: boolean
@@ -34,6 +35,8 @@ export default function ModalMovimientos({ isOpen, setIsOpen, idProducto } : Mod
 
     const { register, reset, handleSubmit, formState: {errors} } = useForm({defaultValues: initialValues})
 
+    const dataAuthProfileUser = usePosNetStore((state) => state.dataAuthProfileUser as AuthUser)
+
     const mutation = useMutation({
         mutationFn: createMovement,
         onError: (error) => {
@@ -61,7 +64,7 @@ export default function ModalMovimientos({ isOpen, setIsOpen, idProducto } : Mod
         console.log("guardando...");
         
         const movimiento = {
-            idUsuario: 10,
+            idUsuario: dataAuthProfileUser.id,
             idProducto: idProducto,
             movimiento: data.movimiento,
             cantidad: Number( data.cantidad),
@@ -159,10 +162,7 @@ export default function ModalMovimientos({ isOpen, setIsOpen, idProducto } : Mod
 
                     </div>
                 </div>
-
             )}
-
-
         </>
     )
 }

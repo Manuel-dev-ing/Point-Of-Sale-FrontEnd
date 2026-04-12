@@ -286,9 +286,6 @@ export default function InventoryView() {
 
               ))}
 
-
-              
-                
             </tbody>
           </table>
         </div>

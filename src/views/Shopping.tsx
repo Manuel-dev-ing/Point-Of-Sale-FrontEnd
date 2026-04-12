@@ -6,7 +6,7 @@ import Button from '../components/Button'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { getProveedores } from '../services/ProveedoresAPI'
 import { usePosNetStore } from '../store'
-import type { ComprasData, Product } from '../types'
+import type { AuthUser, ComprasData, Product } from '../types'
 import { getAllProducts } from '../services/ProductsAPI'
 import { calcularIVA } from '../helpers'
 import { createCompra, totalCompras } from '../services/ComprasAPI'
@@ -25,6 +25,8 @@ export default function Shopping() {
     const actualizarCantidad = usePosNetStore((state) => state.actualizarCantidad)
     const eliminarProducto = usePosNetStore((state) => state.eliminarProducto)
     const clearDataVenta = usePosNetStore((state) => state.clearDataVenta)
+    const dataAuthProfileUser = usePosNetStore((state) => state.dataAuthProfileUser as AuthUser)
+    
 
     const { data: dataTotalCompras, isLoading: isLoadingTotalCompras } = useQuery({
         queryFn: totalCompras,
@@ -107,7 +109,7 @@ export default function Shopping() {
         })
 
         const compra = {
-            idUsuario: 1,
+            idUsuario: dataAuthProfileUser.id,
             idProveedor: Number(proveedor),
             numeroCompra: 1,
             subTotal: total,

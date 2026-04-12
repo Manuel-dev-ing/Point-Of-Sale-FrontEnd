@@ -96,8 +96,7 @@ export default function ModalUsers({rols, isOpen, setIsOpen} : ModalUsersProps) 
             const updatePassword = data.password ? data.password : password
 
             const payload : UserUpdateFormData = {...data, id: activeId, idRol: Number(data.idRol), password: updatePassword, estado: user_data.estado}
-            console.log("editando...");
-            console.log(payload);
+            
             
             mutationEdit.mutate(payload)
             

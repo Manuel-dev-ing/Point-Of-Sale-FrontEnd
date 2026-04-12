@@ -168,7 +168,7 @@ export default function UsersView() {
                                     Rol
                                 </th>
                                 <th scope="col" className="px-6 py-3 font-medium">
-                                Estado
+                                    Estado
                                 </th>
                             
                                 <th scope="col" className="px-6 py-3 font-medium">
