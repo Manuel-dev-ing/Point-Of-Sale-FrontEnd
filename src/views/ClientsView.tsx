@@ -2,26 +2,29 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { DollarSign, FolderOpen, Mail, Package, Phone, Plus, Search, ShoppingBag, SquarePen, Telescope, Trash2, Users } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { deleteClient, getClients } from '../services/ClientsAPI';
-import type { Clients } from '../types';
+import type { Clients, HistorialCompras } from '../types';
 import ModalClients from '../components/clientes/ModalClients';
 import { toast } from 'react-toastify';
 import { usePosNetStore } from '../store';
 import CardStatistics from '../components/CardStatistics';
 import SearchInput from '../components/SearchInput';
 import Spinner from '../components/Spinner';
+import ModalHistorialClientes from '../components/clientes/ModalHistorialClientes';
+import { getTotalGastado } from '../helpers';
 
 export default function ClientsView() {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpenModal, setIsOpenModal] = useState(false);
     const [ clients, setClient ] = useState<Clients[]>()
+    const [historialCompras, setHistorialCompras] = useState<HistorialCompras[]>([])
     const set_client = usePosNetStore((state) => state.set)
 
     
     const { data, isLoading, isError } = useQuery({
         queryFn: getClients,
         queryKey: ['Clients']
-
-    });
+    });    
 
     const mutation = useMutation({
         mutationFn: deleteClient,
@@ -137,21 +140,30 @@ export default function ClientsView() {
                                             <p>{client.correo}</p>
                                         </div>
 
-
                                     </td>
                                     <td className="px-6 py-4">
-                                        <p className='text-gray-800'>15</p>
+                                        <p className='text-gray-800'>
+                                            {client.historialCompras.length}
+                                        </p>
                                 
                                     </td>
                                     <td className="px-6 py-4">
-                                    <p className='text-gray-800'>$15,569.50</p>
+                                    <p className='text-gray-800'>
+                                        ${getTotalGastado(client.historialCompras).toFixed(2)}                                   
+                                    </p>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <p className='text-gray-800'>27/1/2024</p>
+                                        <p className='text-gray-800'>
+                                            {client.historialCompras[client.historialCompras.length - 1].fecha}
+                                        </p>
                                     </td>
                                     <td className="px-3 py-3">
                                         <div className='flex gap-2'>
-                                            <button className='border border-gray-300 rounded py-2 px-2.5 cursor-pointer btn-edit-hover bg-gray-100 text-gray-800 font-medium text-xs w-24 '>Ver Historial</button>
+                                            <button className='border border-gray-300 rounded py-2 px-2.5 cursor-pointer btn-edit-hover bg-gray-100 text-gray-800 font-medium text-xs w-24' 
+                                            onClick={() => setIsOpenModal(true)}
+                                            >
+                                                Ver Historial
+                                            </button>
 
                                             <button className='border border-gray-300 rounded py-2 px-2.5 cursor-pointer btn-edit-hover bg-gray-100' 
                                             onClick={() => handleClickEditar(client)}>
@@ -182,6 +194,11 @@ export default function ClientsView() {
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
             
+            />
+
+            <ModalHistorialClientes
+                isOpen={isOpenModal}
+                setIsOpen={setIsOpenModal}
             />                
         
         </>

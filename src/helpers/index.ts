@@ -1,7 +1,7 @@
 import { addMonth, format, monthStart, weekEnd, weekStart, yearEnd, yearStart } from "@formkit/tempo";
 import {jwtDecode} from "jwt-decode";
 import { usePosNetStore } from "../store";
-import type { AuthUser, ResumenVenta } from "../types";
+import type { AuthUser, HistorialCompras, ResumenVenta } from "../types";
 import { array, object } from "zod";
 
 export const numeroVenta = () => {
@@ -40,6 +40,18 @@ export const numeroVenta = () => {
 
 }
 
+
+export const getTotalGastado = (data: HistorialCompras[]) => {
+
+  let total = 0;
+
+  for (let index = 0; index < data.length; index++) {
+    total += data[index].total
+    
+  }
+
+  return total;
+}
 
 export const isAdmin = (user: AuthUser) => {
   const roles = ["Cajero/Vendedor", "Administrador"]

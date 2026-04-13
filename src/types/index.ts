@@ -10,6 +10,13 @@ const categories = z.object({
     productos: z.number()
 });
 
+const historialCompras = z.object({
+    fecha: z.string(),
+    items: z.number(),
+    total: z.number()
+})
+
+
 const clients = z.object({
     id: z.number(),
     nombre: z.string(),
@@ -17,7 +24,8 @@ const clients = z.object({
     segundoApellido: z.string().nullable(),
     correo: z.string().nullable(),
     telefono: z.string().nullable(),
-    estado: z.boolean()
+    estado: z.boolean(),
+    historialCompras: z.array(historialCompras)
 })
 
 const products = z.object({
@@ -225,6 +233,9 @@ export type UserUpdateFormData = Pick<User, 'id' | 'idRol' | 'nombre' | 'correo'
 export const authUserSchema = authUser
 
 export type AuthUser = z.infer<typeof authUser>
+
+//historial de clientes
+export type HistorialCompras = z.infer<typeof historialCompras>
 
 //resumen estadisticas
 export const resumeStatisticsSchema = resumeStatistics
