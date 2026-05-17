@@ -9,7 +9,10 @@ export async function getClients() {
     
     try {
         const response = await api('/clients');
+        // console.log(response);
+        
         const resultado = clientsShema.safeParse(response.data)
+        // console.log(resultado);
 
         if (resultado.success) {
             return resultado.data
