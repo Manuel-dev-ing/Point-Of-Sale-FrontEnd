@@ -1,4 +1,4 @@
-import { authLoginSchema, authUserSchema, type Alerta, type AuthUser, type Category, type Clients, type ComprasData, type LoginFormData, type Product, type SaleData, type User } from "./types"
+import { authLoginSchema, authUserSchema, type Alerta, type AuthUser, type Category, type Clients, type ComprasData, type HistorialCompras, type LoginFormData, type Product, type SaleData, type User } from "./types"
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
 import axios from "axios"
@@ -21,6 +21,12 @@ type PosNetStore = {
     periodo: string
     fechaInicio: string
     fechaFin: string
+    //historial de clientes
+    dataPaginacion: HistorialCompras[]
+    setDataPaginacion: (data: HistorialCompras[]) => void
+    //Paginacion
+    dataPaginas: HistorialCompras[]
+    setDataPaginas: (data: HistorialCompras[]) => void
     //modal
     isOpen: boolean
     setIsOpen: (open : boolean) => void
@@ -79,6 +85,8 @@ const pendingProducts = () => {
 }
 
 export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
+    dataPaginacion: [],
+    dataPaginas: [],
     dataCompras: productsCompras(),
     dataVenta: productsSale(),
     dataPendingProducts: pendingProducts(),
@@ -478,7 +486,17 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
         console.log("logout...");
         
         localStorage.clear();
-    }
+    },
+    setDataPaginacion: (data) => {
+        set(() => ({
+            dataPaginacion: data
+        }))
+    },
+    setDataPaginas: (data) => {
+        set(() => ({
+            dataPaginas: data
+        }))
+    },
 
 })))
 

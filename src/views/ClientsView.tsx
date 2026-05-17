@@ -19,7 +19,7 @@ export default function ClientsView() {
     const [ clients, setClient ] = useState<Clients[]>()
     const [historialCompras, setHistorialCompras] = useState<HistorialCompras[]>([])
     const set_client = usePosNetStore((state) => state.set)
-
+    const setDataPaginacion = usePosNetStore((state) => state.setDataPaginacion)
     
     const { data, isLoading, isError } = useQuery({
         queryFn: getClients,
@@ -64,6 +64,12 @@ export default function ClientsView() {
     const handleClickEditar = (data : Clients) => {
         set_client(data)
         setIsOpen(true)
+    }
+
+    const handleClickHistorial = (data:HistorialCompras[]) => {
+        setIsOpenModal(true)
+        console.log(data);
+        setDataPaginacion(data)
     }
 
     if(isLoading){
@@ -153,14 +159,14 @@ export default function ClientsView() {
                                     </p>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <p className='text-gray-800'>
+                                        <p className='text-gray-800 w-20'>
                                             {client.historialCompras[client.historialCompras.length - 1].fecha}
                                         </p>
                                     </td>
                                     <td className="px-3 py-3">
                                         <div className='flex gap-2'>
                                             <button className='border border-gray-300 rounded py-2 px-2.5 cursor-pointer btn-edit-hover bg-gray-100 text-gray-800 font-medium text-xs w-24' 
-                                            onClick={() => setIsOpenModal(true)}
+                                            onClick={() => handleClickHistorial(client.historialCompras)}
                                             >
                                                 Ver Historial
                                             </button>
