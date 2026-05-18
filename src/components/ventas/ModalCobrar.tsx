@@ -9,13 +9,15 @@ import { usePosNetStore } from '../../store'
 
 
 type ModalChangeProductProps = {
-    cobrar: boolean
-    setCobrar: React.Dispatch<React.SetStateAction<boolean>>
-    total: number
-    dataVenta: SaleData[]
+  cobrar: boolean
+  setCobrar: React.Dispatch<React.SetStateAction<boolean>>
+  total: number
+  dataVenta: SaleData[]
+  idCliente: string
+  
 }
 
-export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : ModalChangeProductProps) {
+export default function ModalCobrar({cobrar, setCobrar, total, dataVenta, idCliente} : ModalChangeProductProps) {
   const [recibe, setRecibe] = useState<number>(0)
   const [nameSales, setNameSales] = useState<string>('sales')
   
@@ -69,7 +71,7 @@ export default function ModalCobrar({cobrar, setCobrar, total, dataVenta} : Moda
 
     const venta = {
       idUsuario: dataAuthProfileUser.id,
-      idCliente: 1,
+      idCliente: Number(idCliente),
       numeroVenta: numeroVenta()!,
       subTotal: total,
       total: total,

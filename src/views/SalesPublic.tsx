@@ -37,7 +37,6 @@ export default function SalesPublic() {
     const [venta, setVenta] = useState<Venta>(initialDataVenta)
     const [nameSales, setNameSales] = useState<string>('sales')
     // const [productsSale, setProductsSale] = useState<SaleData[]>([])
-
     const dataVenta = usePosNetStore((state) => state.dataVenta as SaleData[])
     const setDataVenta = usePosNetStore((state) => state.setDataVenta)
     const actualizarCantidad = usePosNetStore((state) => state.actualizarCantidad)
@@ -109,7 +108,7 @@ export default function SalesPublic() {
     }
 
     const handleChangeCliente = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    
+        
         setSelectCliente(e.target.value)
     }
 
@@ -403,15 +402,18 @@ export default function SalesPublic() {
         </div>                  
 
         <ModalPendingProducts />
+
         <ModalChangeProduct
             isOpen={isOpen}
             setIsOpen={setIsOpen}
         />
+
         <ModalCobrar 
             cobrar={cobrar}
             setCobrar={setCobrar}
             total={total}
             dataVenta={dataVenta}
+            idCliente={selectCliente}             
         />            
 
 
