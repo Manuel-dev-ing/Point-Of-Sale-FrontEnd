@@ -41,6 +41,12 @@ export const numeroVenta = () => {
 }
 
 
+export const numeroOrdenCompra = () => {
+  const num = Math.floor(Math.random() * Date.now())
+
+  return num
+}
+
 export const getTotalGastado = (data: HistorialCompras[]) => {
 
   let total = 0;

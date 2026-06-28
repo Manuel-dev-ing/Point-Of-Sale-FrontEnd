@@ -14,6 +14,7 @@ import UsersView from "./views/UsersView";
 import Login from "./views/Login";
 import { usePosNetStore } from "./store";
 import type { AuthUser } from "./types";
+import Invoice from "./components/invoice/invoice";
 
 
 export default function Router(){
@@ -40,6 +41,7 @@ export default function Router(){
                     <Route path="/shopping" element={<Shopping />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
+                <Route path="/invoice" element={<Invoice />} />
 
             </Routes>
         </BrowserRouter>

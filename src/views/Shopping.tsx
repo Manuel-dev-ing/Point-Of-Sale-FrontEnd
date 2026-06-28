@@ -1,4 +1,4 @@
-import { CreditCard, PackageX, Receipt, Trash2, Truck, User } from 'lucide-react'
+import { CreditCard, LogIn, PackageX, Receipt, Trash2, Truck, User } from 'lucide-react'
 import React, { use, useEffect, useState } from 'react'
 import AgregarProducto from '../components/ventas/AgregarProducto'
 import { toast } from 'react-toastify'
@@ -26,7 +26,7 @@ export default function Shopping() {
     const eliminarProducto = usePosNetStore((state) => state.eliminarProducto)
     const clearDataVenta = usePosNetStore((state) => state.clearDataVenta)
     const dataAuthProfileUser = usePosNetStore((state) => state.dataAuthProfileUser as AuthUser)
-    
+    const setIdProvedor = usePosNetStore((state) => state.setIdProvedor)    
 
     const { data: dataTotalCompras, isLoading: isLoadingTotalCompras } = useQuery({
         queryFn: totalCompras,
@@ -59,16 +59,18 @@ export default function Shopping() {
     useEffect(() => {
     
         console.log("use effect...");
-
+        console.log(proveedor);
+        
         if (!data?.length) return;
+        setIdProvedor(Number(proveedor))
 
         const products = [...data]
-        console.log(products);
+        // console.log(products);
         
 
         setProducts(products)
 
-    }, [data])
+    }, [data, proveedor])
 
     useEffect(() => {
         console.log("use effect 2");
@@ -180,6 +182,8 @@ export default function Shopping() {
     const handleChangeProveedor = (e: React.ChangeEvent<HTMLSelectElement>) => {
   
         setProveedor(e.target.value)
+        setIdProvedor(Number(e.target.value))
+        
     }
 
     const handleClickEliminarProductos = () => {
@@ -199,7 +203,7 @@ export default function Shopping() {
         }
         
     }
-
+    
     const total = dataCompras.reduce((total, item) => total + (item.costoUnitario * item.cantidad), 0); 
     const cantidad_productos = dataCompras.reduce((total, item) => total + item.cantidad, 0)
 

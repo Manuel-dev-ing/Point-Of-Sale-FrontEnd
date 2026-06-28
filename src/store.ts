@@ -9,6 +9,9 @@ type PosNetStore = {
     set: (formData: Category | Clients | Product | User) => void
     activeId: number
     reset: () => void
+    //proveedor
+    idProveedor: number
+    setIdProvedor: (id:number) => void
     //ventas
     dataVenta: SaleData[] 
     //Compras
@@ -84,6 +87,12 @@ const pendingProducts = () => {
     return arr_products
 }
 
+const getIdProveedor = () => {
+    const idProveedor = localStorage.getItem('idProveedor')
+    const prov : number = idProveedor ? JSON.parse(idProveedor) : 0 
+    return prov
+}
+
 export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
     dataPaginacion: [],
     dataPaginas: [],
@@ -96,6 +105,7 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
     fechaFin: '',
     dataProductsSelected: [],
     dataAuthProfileUser: authData(),
+    idProveedor: getIdProveedor(),
     set: (formData) => {
         const { id } = formData
 
@@ -496,6 +506,9 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
         set(() => ({
             dataPaginas: data
         }))
+    },
+    setIdProvedor: (id) => {
+        localStorage.setItem('idProveedor', JSON.stringify(id))
     },
 
 })))

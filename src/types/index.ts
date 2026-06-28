@@ -54,7 +54,7 @@ export const product = z.object({
 })
 
 //proveedores
-const proveedor = z.object({
+export const proveedor = z.object({
     id: z.number(),
     ciudad: z.string(),
     nombre: z.string(),

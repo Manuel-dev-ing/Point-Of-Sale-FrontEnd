@@ -1,4 +1,4 @@
-import { Boxes, ChartColumn, Computer, LogOut, PackageX, PanelLeft, Plus, ReceiptText, ShoppingBasket, ShoppingCart, Users, Warehouse } from 'lucide-react'
+import { Boxes, ChartColumn, ClipboardList, Computer, LogOut, PackageX, PanelLeft, Plus, ReceiptText, ShoppingBasket, ShoppingCart, Users, Warehouse } from 'lucide-react'
 import React from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -8,7 +8,7 @@ export default function PublicLayout() {
   const setIsOpen = usePosNetStore((state) => state.setIsOpen)
 
   const dataPendingProducts = usePosNetStore((state) => state.dataPendingProducts)
-
+  const dataCompras = usePosNetStore((state) => state.dataCompras)
   
 
   return (
@@ -67,11 +67,17 @@ export default function PublicLayout() {
                 </button>
 
               )}
+              {dataCompras.length > 0 && (
 
+                <Link to='/invoice' target='_blank' className="border bg-gray-100 border-gray-200 py-2 px-2.5 rounded hover:bg-gray-200 flex items-center gap-3 text-gray-700 font-medium text-sm cursor-pointer">
+                  <ClipboardList size={17} />
+                  Crear Orden
+                </Link>
+              )}
 
             </div>
           
-            <Link to={'/products/add'} type="button" className="border bg-gray-100 border-gray-200 py-2 px-2.5 rounded hover:bg-gray-200 flex items-center gap-3 text-gray-700 font-medium text-sm cursor-pointer">
+            <Link to={'#'} type='button' className="border bg-gray-100 border-gray-200 py-2 px-2.5 rounded hover:bg-gray-200 flex items-center gap-3 text-gray-700 font-medium text-sm cursor-pointer">
                 <LogOut size={17} />
                 Salir
             </Link>
