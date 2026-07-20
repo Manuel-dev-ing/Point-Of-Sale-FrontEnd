@@ -5,11 +5,18 @@ import { da } from "zod/v4/locales";
 
 
 
-export async function getClients() {
+export async function getClients(pagina : number, recordsPorPagina : number) {
     
     try {
-        const response = await api('/clients');
-        // console.log(response);
+        const response = await api('/clients', {
+            params: {pagina, recordsPorPagina}
+        });
+        
+        console.log(response);
+        
+        const totalRegistros = Number(response.headers['cantidad-total-registros'])
+    
+        localStorage.setItem('totalRegistros', JSON.stringify(totalRegistros))
         
         const resultado = clientsShema.safeParse(response.data)
         // console.log(resultado);

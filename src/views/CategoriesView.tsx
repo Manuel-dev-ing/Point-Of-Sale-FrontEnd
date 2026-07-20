@@ -9,18 +9,20 @@ import { usePosNetStore } from '../store';
 import CardStatistics from '../components/CardStatistics';
 import SearchInput from '../components/SearchInput';
 import Spinner from '../components/Spinner';
-
+import PaginationBack from '../components/PaginationBack';
 
 
 export default function CategoriesView() {
     const [isOpen, setIsOpen] = useState(false);
     const [ Categories, setCategories ] = useState<Categories>()
+    const [recordsPorPagina, setRecordPorPagina] = useState<number>(5)
+    const [pagina, setPagina] = useState<number>(1)  
 
     const setCategory = usePosNetStore((state) => state.set)
 
     const { data, isError, isLoading } = useQuery({
-        queryFn: getCategories,
-        queryKey: ['categories']
+        queryFn: () => getCategories(pagina, recordsPorPagina),
+        queryKey: ['categories', pagina, recordsPorPagina]
     });
 
     const mutation = useMutation({
@@ -155,14 +157,15 @@ export default function CategoriesView() {
                                         </td>
                                     </tr>
                                 ))}
-                                
-                            
                             </tbody>
                         </table>
                     </div>
-
-
                 </div>
+                <PaginationBack
+                    pagina={pagina}
+                    setPagina={setPagina}
+                    recordsPorPagina={recordsPorPagina}            
+                />            
                 
 
                 <ModalCategories

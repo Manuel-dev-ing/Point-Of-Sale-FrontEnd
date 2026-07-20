@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { usePosNetStore } from '../store'
-import type { HistorialCompras } from '../types'
-import { record } from 'zod'
+import type { HistorialCompras, Product } from '../types'
 
 export default function Pagination() {
     const dataPaginacion = usePosNetStore((state) => state.dataPaginacion)
@@ -12,17 +11,17 @@ export default function Pagination() {
     const [pagina, setPagina] = useState<number>(0)
     const [recordsPorPagina, setRecordsPorPagina] = useState<number>(5)
     const [cantidadTotalRecords, setCantidadTotalRecords] = useState<number>(dataPaginacion.length)
-    const [records, setRecords] = useState<HistorialCompras[][]>([])
+    const [records, setRecords] = useState<HistorialCompras[][] | Product[][]>([])
 
-    console.log("Resultado de dividir la cantidadTotalRecords / recordsPorPagina: ");
-    // console.log(Math.ceil(cantidadTotalRecords / recordsPorPagina));
+    console.log("componente paginacion...");
 
     // si la cantidad total de records es 37, 
     // entonces dividir la cantidadTotalRecords / recordsPorPagina
     // el resultado sera la cantidad de arreglos, por ejemplo si el resultado es 4 entonces seran 4 arreglos  
 
     useEffect(() => {
-        const result = Math.ceil(cantidadTotalRecords / recordsPorPagina)
+        const result = Math.ceil(dataPaginacion.length / recordsPorPagina)
+        console.log(result);
 
         let inicio = 0
         let fin = recordsPorPagina - 1
@@ -44,15 +43,13 @@ export default function Pagination() {
             
         }
 
-        // console.log(data_records);
         setRecords(data_records)
 
-    }, [dataPaginacion])
+    }, [dataPaginacion, cantidadTotalRecords])
 
     useEffect(() => {
 
         if (records.length > 0) {
-            console.log("records mayor que cero...");
             setDataPaginas(records[0])
             return
         }
@@ -66,6 +63,8 @@ export default function Pagination() {
   
         setPagina(index)        
         setDataPaginas(records[index])
+        console.log(index);
+        
 
         if (index === last_page) {
 
@@ -77,6 +76,7 @@ export default function Pagination() {
 
         }else if(index > 0){
             setActive(false)
+            setActiveNext(false)
 
         }
        
@@ -89,9 +89,10 @@ export default function Pagination() {
         
         if (result === -1) {
             setActive(true)
+            setActiveNext(true)
 
         }
-
+        establecerPagina(result)
         setPagina(result)
         setDataPaginas(records[result])
         
@@ -100,6 +101,7 @@ export default function Pagination() {
     const handleNext = () => {
         const result = pagina + 1
         const last_page = records.length -1
+        establecerPagina(result)
 
         setPagina(result)
         setDataPaginas(records[result])
@@ -116,7 +118,7 @@ export default function Pagination() {
             <nav aria-label="Page navigation example ">
                 <ul className="inline-flex -space-x-px text-sm h-10">
                     <li>
-                        <button  disabled={active} className={`flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 ${active === true ? 'disabled:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50' : ''} `}
+                        <button disabled={active} className={`flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 ${active === true ? 'disabled:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50' : ''} `}
                         onClick={() => handlePrevious()}
                         >
                             Previous

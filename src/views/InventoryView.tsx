@@ -4,18 +4,23 @@ import { getAllProducts } from '../services/ProductsAPI'
 import { useEffect, useState } from 'react'
 import ModalMovimientos from '../components/inventarios/ModalMovimientos'
 import { getMovements } from '../services/InventarioAPI'
-import { getCategories } from '../services/CategoryAPI'
+import { getAllCategories, getCategories } from '../services/CategoryAPI'
 import type { Product } from '../types'
 import CardStatistics from '../components/CardStatistics'
 import SearchInput from '../components/SearchInput'
 import Spinner from '../components/Spinner'
+import { usePosNetStore } from '../store'
+import Pagination from '../components/Pagination'
 
 export default function InventoryView() {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [idProducto, setIdProducto] = useState<number>(0)
   const [categoria, setCategoria] = useState<string>("")
   const [products, setProducts] = useState<Product[]>()
- 
+  // const dataPaginacion = usePosNetStore((state) => state.dataPaginacion as Product[])
+  const setDataPaginacion = usePosNetStore((state) => state.setDataPaginacion)
+  const dataPaginas = usePosNetStore((state) => state.dataPaginas as Product[])
+
   const { data: data_products, isLoading } = useQuery({
     queryFn: getAllProducts,
     queryKey: ['allProducts']
@@ -27,28 +32,35 @@ export default function InventoryView() {
     queryKey: ['moviments']
   })
 
-  console.log(data_movements);
-  
-
   const { data: data_categories, isLoading: isLoadingCategories } = useQuery({
-    queryFn: getCategories,
+    queryFn: getAllCategories,
     queryKey: ['categories']
   })
   
   useEffect(() => {
-    if (!data_products?.length) return
 
+    if (!data_products?.length) return
     const resultado = [...data_products]
 
+    //set data paginas
+    setDataPaginacion(resultado as Product[])
+
+  }, [data_products])
+
+  useEffect(() => {
+
+    const resultado = [...dataPaginas]
+    
     if (categoria != "") {
        
       const result = resultado.filter(x => x.categoria === categoria)
       setProducts(result)
       return;
     }
-
+    
     setProducts(resultado)
-  }, [data_products, categoria])
+
+  }, [dataPaginas, categoria])
 
   const handleClickMovimiento = (id : number) => {
     
@@ -74,10 +86,8 @@ export default function InventoryView() {
   }
 
   const handleChangeBuscar = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     let valor = e.target.value
     const resultado = data_products?.filter(x => x.nombre.includes(valor))
-    console.log(resultado);
     setProducts(resultado)
     
   }
@@ -165,8 +175,8 @@ export default function InventoryView() {
                   <th className="px-6 py-4 font-medium">
                     {product.nombre}
                   </th>
-                  <th className="px-6 py-4">
-                    <p className='text-center bg-gray-200 text-gray-800 text-xs font-medium me-2 rounded-full'>
+                  <th className="px-6 py-4 text-center">
+                    <p className='px-2 py-[1px] inline-block text-center bg-gray-200 text-gray-800 text-xs font-medium rounded-full'>
                       {product.categoria}
                     </p>
                   </th>
@@ -219,6 +229,8 @@ export default function InventoryView() {
           </table>
         </div>
       </div>
+      <Pagination />        
+
 
       <div className='mt-8 p-7 rounded border border-gray-300 bg-white'>
         <h2 className='font-medium text-2xl text-gray-800 mb-3'>Movimientos Recientes</h2>

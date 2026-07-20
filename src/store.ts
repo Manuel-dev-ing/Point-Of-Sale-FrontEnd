@@ -25,11 +25,11 @@ type PosNetStore = {
     fechaInicio: string
     fechaFin: string
     //historial de clientes
-    dataPaginacion: HistorialCompras[]
-    setDataPaginacion: (data: HistorialCompras[]) => void
+    dataPaginacion: HistorialCompras[] | Product[]
+    setDataPaginacion: (data: HistorialCompras[] | Product[] ) => void
     //Paginacion
-    dataPaginas: HistorialCompras[]
-    setDataPaginas: (data: HistorialCompras[]) => void
+    dataPaginas: HistorialCompras[] | Product[]
+    setDataPaginas: (data: HistorialCompras[] | Product[]) => void
     //modal
     isOpen: boolean
     setIsOpen: (open : boolean) => void

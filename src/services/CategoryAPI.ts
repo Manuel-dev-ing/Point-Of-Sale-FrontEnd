@@ -4,10 +4,37 @@ import { categoriesShema, type Category, type CategoryFormData } from "../types"
 
 
  
-export async function getCategories() {
+export async function getCategories(pagina : number, recordsPorPagina : number) {
     
     try {
-        const response = await api('/categories');
+        const response = await api('/categories', {
+            params: {pagina, recordsPorPagina}
+        });
+
+        const totalRegistros = Number(response.headers['cantidad-total-registros'])
+    
+        localStorage.setItem('totalRegistros', JSON.stringify(totalRegistros))
+        
+
+        const resultado = categoriesShema.safeParse(response.data)
+
+        if (resultado.success) {
+            return resultado.data
+        }
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response) {
+            throw new Error(error.response.data.error);
+            
+        }
+    }
+}
+
+export async function getAllCategories() {
+    
+    try {
+        const response = await api('/categories/getAllCategories');
+
         const resultado = categoriesShema.safeParse(response.data)
 
         if (resultado.success) {

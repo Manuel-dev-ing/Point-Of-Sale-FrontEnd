@@ -3,18 +3,21 @@ import { FolderOpen, Package, Plus, Search, SquarePen, Trash2, TriangleAlert } f
 import React, { useEffect, useState } from 'react'
 import { deleteProduct, getProducts } from '../services/ProductsAPI'
 import type { Product } from '../types'
-import { getCategories } from '../services/CategoryAPI'
+import { getAllCategories, getCategories } from '../services/CategoryAPI'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { usePosNetStore } from '../store'
 import CardStatistics from '../components/CardStatistics'
 import SearchInput from '../components/SearchInput'
 import Spinner from '../components/Spinner'
+import PaginationBack from '../components/PaginationBack'
 
 export default function ProductsView() {
     const [product, setProducts] = useState<Product[]>()
     const [select, setSelect] = useState<string>('')
     const [categoria, setCategoria] = useState<string>('')
+    const [recordsPorPagina, setRecordPorPagina] = useState<number>(5)
+    const [pagina, setPagina] = useState<number>(1)
 
     const set_product = usePosNetStore((state) => state.set)
 
@@ -23,13 +26,13 @@ export default function ProductsView() {
     const queryClient = useQueryClient();
 
     const { isLoading, isError, data } = useQuery({
-        queryFn: getProducts,
-        queryKey: ['products']
+        queryFn: () => getProducts(pagina, recordsPorPagina),
+        queryKey: ['products', pagina, recordsPorPagina]
     })
 
     const { isLoading: isLoadingCategory, data: dataCategory } = useQuery({
-        queryFn: getCategories,
-        queryKey: ['categories']
+        queryFn: getAllCategories,
+        queryKey: ['getAllCategories']
     })
 
     const mutationDelete = useMutation({
@@ -228,7 +231,11 @@ export default function ProductsView() {
                     </table>
                 </div>
             </div>
-
+            <PaginationBack 
+                pagina={pagina}
+                recordsPorPagina={recordsPorPagina}
+                setPagina={setPagina}
+            />                
         
         </>
     )

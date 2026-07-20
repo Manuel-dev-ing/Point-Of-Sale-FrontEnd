@@ -35,8 +35,7 @@ export default function Tab() {
             <div className="mt-2 bg-white ">
                 {activeTab === 0 ? (
                     <>
-                        <h1>Tabla</h1>
-                        {tabs[activeTab].content}{" "}{activeTab}
+                      
                         <div className='rounded border border-gray-200 bg-white'>
                             <div className="relative overflow-x-auto">
                                 <table className='w-full text-sm text-left rtl:text-right text-gray-500'>
@@ -77,7 +76,6 @@ export default function Tab() {
                             </div>
                         </div>
 
-
                         <Pagination />
 
                     </>
@@ -87,8 +85,6 @@ export default function Tab() {
                         <div className='flex gap-5'>
                             <div className='flex items-center gap-2 w-full border border-gray-300 rounded bg-white px-4 py-3'>
                                 <Calendar color='#808c85' size={17} />
-                                {/* {tabs[activeTab].content}{" "}{activeTab} */}
-
                                 <div>
                                     <p className='font-normal text-gray-500 text-sm'>Cliente desde</p>
                                     <span className='text-gray-700 font-medium'>14/10/23</span>

@@ -6,11 +6,20 @@ import { usePosNetStore } from "../store";
 
 
 
-export async function getProducts() {
+export async function getProducts(pagina : number, recordsPorPagina : number) {
 
     try {
         
-        const response = await api('/products')
+        const response = await api('/products', {
+            params: {pagina, recordsPorPagina}
+        });
+
+        console.log(response);
+
+        const totalRegistros = Number(response.headers['cantidad-total-registros'])
+    
+        localStorage.setItem('totalRegistros', JSON.stringify(totalRegistros))
+
         const result = productsShema.safeParse(response.data)
 
         if (result.success) {

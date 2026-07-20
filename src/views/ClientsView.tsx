@@ -11,19 +11,22 @@ import SearchInput from '../components/SearchInput';
 import Spinner from '../components/Spinner';
 import ModalHistorialClientes from '../components/clientes/ModalHistorialClientes';
 import { getTotalGastado } from '../helpers';
+import PaginationBack from '../components/PaginationBack';
 
 export default function ClientsView() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenModal, setIsOpenModal] = useState(false);
     const [ clients, setClient ] = useState<Clients[]>()
+    const [recordsPorPagina, setRecordPorPagina] = useState<number>(5)
+    const [pagina, setPagina] = useState<number>(1)  
     const [historialCompras, setHistorialCompras] = useState<HistorialCompras[]>([])
     const set_client = usePosNetStore((state) => state.set)
     const setDataPaginacion = usePosNetStore((state) => state.setDataPaginacion)
     
     const { data, isLoading, isError } = useQuery({
-        queryFn: getClients,
-        queryKey: ['Clients']
+        queryFn: () => getClients(pagina, recordsPorPagina),
+        queryKey: ['Clients', pagina, recordsPorPagina]
     });    
 
     const mutation = useMutation({
@@ -160,7 +163,9 @@ export default function ClientsView() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <p className='text-gray-800 w-20'>
-                                            {client.historialCompras[client.historialCompras.length - 1].fecha}
+                                            {client.historialCompras.length > 0 ? 
+                                            client.historialCompras[client.historialCompras.length - 1].fecha : 'Sin fecha'
+                                            }
                                         </p>
                                     </td>
                                     <td className="px-3 py-3">
@@ -195,6 +200,12 @@ export default function ClientsView() {
                     </table>
                 </div>
             </div>
+            <PaginationBack
+                pagina={pagina}
+                setPagina={setPagina}
+                recordsPorPagina={recordsPorPagina}            
+            />                  
+
 
             <ModalClients
                 isOpen={isOpen}
