@@ -211,6 +211,19 @@ export const respuestaAutenticacion = z.object({
     refreshToken: z.string()
 })
 
+// settings company
+export const settingsCompany = z.object({
+    id: number(),
+    nombreEmpresa: z.string(),
+    direccion: z.string(),
+    ciudad: z.string(),
+    estado: z.string(),
+    codigoPostal: z.string(),
+    email: z.string(),
+    telefono: z.string(),
+    sitioWeb: z.string(),
+})
+
 //Auth
 export type ResponseAuthentication = z.infer<typeof respuestaAutenticacion>
 
@@ -291,11 +304,14 @@ export type Proveedor = z.infer<typeof proveedor>
 //Compras
 export type Compra = z.infer<typeof compra>
 
-
 //Movimientos
 export const movimientosShema = z.array(movimiento)
 
 
+// Configuraciones
+
+export type ConfigEmpresa = z.infer<typeof settingsCompany>
+export type ConfigEmpresaFormData = Pick<ConfigEmpresa, 'nombreEmpresa' | 'direccion' | 'ciudad' | 'estado' | 'codigoPostal' | 'email' | 'telefono' | 'sitioWeb'>
 
 export type MovimientoFormData = {
     idProducto: number,

@@ -1,5 +1,5 @@
 
-import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, Users, Warehouse } from 'lucide-react'
+import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, UserCog, Users, Warehouse } from 'lucide-react'
 import { ToastContainer } from 'react-toastify'
 
 import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom'
@@ -131,10 +131,20 @@ export default function AdminLayout({user} : AdminLayoutProps) {
                                             
                                                 <li>
                                                     <Link to={'/users'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                                        <Settings
+                                                        <UserCog
                                                             size={15}
                                                         />
                                                         <span className="ms-3 text-sm font-normal">Usuarios</span>
+                                                    </Link>
+                                                </li>
+                                                <li>
+                                                    <Link to={'/settings'} className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                                        <Settings
+                                                            size={15}
+                                                        />
+                                                        <span className="ms-3 text-sm font-normal">
+                                                            Configuraciones
+                                                        </span>
                                                     </Link>
                                                 </li>
                                             
