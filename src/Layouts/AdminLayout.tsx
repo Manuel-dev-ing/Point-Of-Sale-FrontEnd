@@ -1,15 +1,23 @@
 
-import { ChartColumn, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, UserCog, Users, Warehouse } from 'lucide-react'
+import { ChartColumn, ChevronDown, ClipboardList, FolderOpen, LayoutDashboard, LogOut, Package, PanelLeft, Settings, ShoppingBag, ShoppingCart, ShoppingCartPlus, UserCog, Users, Warehouse } from 'lucide-react'
 import { ToastContainer } from 'react-toastify'
 
 import { Link, Navigate, Outlet, useNavigate } from 'react-router-dom'
 import type { AuthUser } from '../types'
 import { isAdmin } from '../helpers'
 import { usePosNetStore } from '../store'
+import ListOptions from '../components/ListOptions'
 
 type AdminLayoutProps = {
     user: AuthUser
 }
+
+//lista de opciones ventas 
+const list = [
+    {icon: ShoppingCartPlus, name: "Crear venta", path: "/sales"},
+    {icon: ClipboardList, name: "Listado de ventas", path: "/sales"},
+]
+
 
 export default function AdminLayout({user} : AdminLayoutProps) {
     
@@ -47,8 +55,8 @@ export default function AdminLayout({user} : AdminLayoutProps) {
 
                                 <ul className="space-y-1 font-medium">
                                     {isAdmin(user) ? (
-                                        <li>
-                                            <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
+                                        <li className=''>
+                                            <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100 group ">
                                                 <ShoppingCart
                                                     size={15}
                                                 />
@@ -66,15 +74,12 @@ export default function AdminLayout({user} : AdminLayoutProps) {
                                                     <span className="ms-3 text-sm font-normal">Dashboard</span>
                                                 </Link>
                                             </li>
-
-                                            <li>
-                                                <Link to={'/sales'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
-                                                    <ShoppingCart
-                                                        size={15}
-                                                    />
-                                                    <span className="ms-3 text-sm font-normal">Ventas</span>
-                                                </Link>
-                                            </li>
+                                            {/* component list options */}
+                                            <ListOptions 
+                                                icon={ShoppingCart} 
+                                                name='Ventas' 
+                                                list={list}    
+                                            />
                                             <li>
                                                 <Link to={'/shopping'} target='_blank' className="flex items-center p-2 rounded-lg hover:bg-gray-100  group">
                                                     <ShoppingBag

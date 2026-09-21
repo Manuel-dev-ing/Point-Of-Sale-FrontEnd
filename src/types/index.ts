@@ -1,4 +1,5 @@
 import z, { number, string } from "zod"
+import { type LucideIcon } from 'lucide-react';
 
 //Categories
 const categories = z.object({
@@ -224,6 +225,16 @@ export const settingsCompany = z.object({
     sitioWeb: z.string(),
 })
 
+const DataCompany = z.object({
+    id: number(),
+    nombreEmpresa: z.string(),
+    direccion: z.string(),
+    codigoPostal: z.string(),
+    email: z.string(),
+    telefono: z.string(),
+    sitioWeb: z.string(),
+})
+
 //Auth
 export type ResponseAuthentication = z.infer<typeof respuestaAutenticacion>
 
@@ -311,6 +322,7 @@ export const movimientosShema = z.array(movimiento)
 // Configuraciones
 
 export type ConfigEmpresa = z.infer<typeof settingsCompany>
+export type DataCompany = z.infer<typeof DataCompany>
 export type ConfigEmpresaFormData = Pick<ConfigEmpresa, 'nombreEmpresa' | 'direccion' | 'ciudad' | 'estado' | 'codigoPostal' | 'email' | 'telefono' | 'sitioWeb'>
 
 export type MovimientoFormData = {
@@ -331,5 +343,12 @@ export type LoginFormData = {
     email: string
     password: string
 
+}
+
+// List Options 
+export type ListOptions = {
+    icon: LucideIcon;
+    name: string;
+    path: string
 }
 

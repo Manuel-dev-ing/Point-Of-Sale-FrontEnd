@@ -1,11 +1,11 @@
-import { authLoginSchema, authUserSchema, type Alerta, type AuthUser, type Category, type Clients, type ComprasData, type HistorialCompras, type LoginFormData, type Product, type SaleData, type User } from "./types"
+import { authLoginSchema, authUserSchema, type Alerta, type AuthUser, type Category, type Clients, type ComprasData, type ConfigEmpresa, type HistorialCompras, type LoginFormData, type Product, type SaleData, type User } from "./types"
 import { create } from "zustand"
 import { devtools } from "zustand/middleware"
 import axios from "axios"
 import api from "./lib/axios"
 
 type PosNetStore = {
-    data: Category | Clients | Product | {} | User
+    data: Category | Clients | Product | {} | User 
     set: (formData: Category | Clients | Product | User) => void
     activeId: number
     reset: () => void
@@ -57,7 +57,7 @@ type PosNetStore = {
     setPeriodo: (periodo: string) => void
     setFechaInicio: (fechaInicio: string) => void
     setFechaFin: (fechaFin: string) => void
-   
+    
 
 }
 
@@ -93,6 +93,7 @@ const getIdProveedor = () => {
     return prov
 }
 
+
 export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
     dataPaginacion: [],
     dataPaginas: [],
@@ -107,6 +108,8 @@ export const usePosNetStore = create<PosNetStore>()(devtools((set, get) => ({
     dataAuthProfileUser: authData(),
     idProveedor: getIdProveedor(),
     set: (formData) => {
+        console.log(formData);
+        
         const { id } = formData
 
         set(() => ({
