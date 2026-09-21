@@ -5,21 +5,29 @@ import { tableData, totalData } from './data';
 import { usePosNetStore } from '../../store';
 import { useQuery } from '@tanstack/react-query';
 import { getProveedorById } from '../../services/ProveedoresAPI';
-import type { Proveedor } from '../../types';
+import type { DataCompany, Proveedor } from '../../types';
 import { format } from '@formkit/tempo';
 import { calcularIVA, numeroOrdenCompra } from '../../helpers';
+import { useEffect, useState } from 'react';
+import { getConfigCompany } from '../../services/ConfiguracionEmpresaAPI';
 
 export default function Invoice() {
-
+    const [configCompany, SetConfigCompany] = useState<DataCompany>({} as DataCompany)
     const dataCompras = usePosNetStore((state) => state.dataCompras)
     
     const idProveedor = usePosNetStore((state) => state.idProveedor)
     
-    
-    const {data, isLoading} = useQuery<Proveedor>({
+    const {data: dataProv, isLoading} = useQuery<Proveedor>({
         queryFn: () => getProveedorById(idProveedor),
         queryKey: ['proveedor']
     })
+
+    const { data: dataConfig, isLoading: isLoadingConfig, isError } = useQuery({
+        queryFn: getConfigCompany,
+        queryKey: ['configcompany']
+    })
+    
+    console.log(dataConfig);
 
     const total = dataCompras.reduce((total, item) => total + (item.costoUnitario * item.cantidad), 0);
     
@@ -38,22 +46,24 @@ export default function Invoice() {
                 <View style={[styles.justifyBetween, styles.flexRow]}>
                     <View>
                         <Text style={[ styles.textBold]}>
-                            COMPANY NAME
+                            {dataConfig?.nombreEmpresa ?? "Vendor Name" }
+
                         </Text>
                         <Text style={[styles.paddingY]}>
-                            Address 23456 Street Name
+                            {dataConfig?.direccion ?? "Address 23456 Street Name"}
                         </Text>
                         <Text style={[styles.paddingY]}>
-                           City, State, Zip Code
+                           {dataConfig?.ciudad ?? "City"}{", "}{dataConfig?.estado ?? "State"}{", "}{dataConfig?.codigoPostal ?? "Zip Code"}
+                           
                         </Text>
                         <Text style={[styles.paddingY]}>
-                            Phone: (123) 465-789
+                            Phone: {dataConfig?.telefono ?? "(123) 456 231"}
                         </Text>
                         <Text style={[styles.paddingY]}>
-                            Email: ejemplo@gmail.com
+                            Email: {dataConfig?.email ?? "correo@gmail.com"}
                         </Text>
                         <Text style={[styles.paddingY]}>
-                            Website: www.ejemplo.com
+                            Website: {dataConfig?.sitioWeb ?? "www.ejemplo.com"}
                         </Text>
 
                     </View>
@@ -74,19 +84,19 @@ export default function Invoice() {
                         </Text>
 
                         <Text style={[styles.paddingLeft5, styles.paddingTop]}>
-                            Vendor Name
+                            {dataConfig?.nombreEmpresa ?? "Vendor Name" }
                         </Text>
                         <Text style={[styles.paddingTop, styles.paddingLeft5]}>
-                            Address 23456 Street Name
+                            {dataConfig?.direccion ?? "Address 23456 Street Name"}
                         </Text>
                         <Text style={[styles.paddingTop, styles.paddingLeft5]}>
-                           City, State, Zip Code
+                           {dataConfig?.ciudad ?? "City"}{", "}{dataConfig?.estado ?? "State"}{", "}{dataConfig?.codigoPostal ?? "Zip Code"}
                         </Text>
                         <Text style={[styles.paddingTop, styles.paddingLeft5]}>
-                            Phone: (123) 465-789
+                            Phone: {dataConfig?.telefono ?? "(123) 456 231"}
                         </Text>
                         <Text style={[styles.paddingTop, styles.paddingLeft5]}>
-                            Email: ejemplo@gmail.com
+                            Email: {dataConfig?.email ?? "correo@gmail.com"}
                         </Text>        
                     
                     </View>
@@ -95,19 +105,19 @@ export default function Invoice() {
                             SKIP TO
                         </Text>        
                         <Text style={[styles.paddingLeft5, styles.paddingTop]}>
-                            {data?.nombre + " " + data?.primerApellido + " " + data?.segundoApellido}
+                            {dataProv?.nombre + " " + dataProv?.primerApellido + " " + dataProv?.segundoApellido}
                         </Text>
                         <Text style={[styles.paddingLeft5, styles.paddingTop]}>
-                            {data?.colonia}
+                            {dataProv?.colonia}
                         </Text>
                         <Text style={[styles.paddingLeft5, styles.paddingTop]}>
-                            {data?.ciudad+", " + data?.estado + ", " + data?.codigoPostal}
+                            {dataProv?.ciudad+", " + dataProv?.codigoPostal}
                         </Text>
                         <Text style={[styles.paddingLeft5, styles.paddingTop]}>
-                            {data?.telefono}
+                            {dataProv?.telefono}
                         </Text>
                         <Text style={[styles.paddingLeft5, styles.paddingTop]}>
-                            {data?.correo}
+                            {dataProv?.correo}
                         </Text>        
 
                     </View>
